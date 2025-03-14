@@ -1,4 +1,4 @@
-package com.ricetraderfront
+package com.ricetraderproject
 
 import android.app.Application
 import com.facebook.react.PackageList
