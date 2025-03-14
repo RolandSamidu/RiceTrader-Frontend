@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }: any) => {
         <View style={tw`mb-4`}>
           <Button
             title="Information"
-            onPress={() => navigation.navigate('Information')}
+            onPress={() => navigation.navigate('Info')}
           />
         </View>
       </View>
