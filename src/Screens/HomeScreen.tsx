@@ -1,19 +1,32 @@
 import React from 'react';
-import { View, Button, ScrollView, StatusBar } from 'react-native';
+import { View, Button } from 'react-native';
 import tw from 'twrnc';
 
-function HomeScreen({ navigation }: any) {
+const HomeScreen = ({ navigation }: any) => {
   return (
-    <ScrollView style={tw`bg-gray-100 flex-1`}>
-      <StatusBar barStyle="dark-content" />
-      <View style={tw`p-5`}>
-        <Button
-          title="Start"
-          onPress={() => navigation.navigate('LoginRegister')}
-        />
+    <View style={tw`flex-1 justify-center items-center bg-gray-100`}>
+      <View style={tw`w-full px-8 pt-8`}>
+        <View style={tw`mb-4`}>
+          <Button
+            title="Login"
+            onPress={() => navigation.navigate('Login')}
+          />
+        </View>
+        <View style={tw`mb-4`}>
+          <Button
+            title="Register"
+            onPress={() => navigation.navigate('Register')}
+          />
+        </View>
+        <View style={tw`mb-4`}>
+          <Button
+            title="Information"
+            onPress={() => navigation.navigate('Information')}
+          />
+        </View>
       </View>
-    </ScrollView>
+    </View>
   );
-}
+};
 
 export default HomeScreen;
