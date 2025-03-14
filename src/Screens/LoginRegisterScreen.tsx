@@ -1,24 +1,24 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Button } from 'react-native';
+import tw from 'twrnc';
 
-const LoginRegisterScreen = ({ navigation }:any) => {
+const LoginRegisterScreen = ({ navigation }: any) => {
   return (
-    <View className="flex-1 justify-center items-center bg-gray-100">
-      <Text className="text-2xl font-bold text-gray-900 mb-6">Login or Register</Text>
-      <View className="w-full px-8">
-        <View className="mb-4">
+    <View style={tw`flex-1 justify-center items-center bg-gray-100`}>
+      <View style={tw`w-full px-8 pt-8`}>
+        <View style={tw`mb-4`}>
           <Button
             title="Login"
             onPress={() => navigation.navigate('Login')}
           />
         </View>
-        <View className="mb-4">
+        <View style={tw`mb-4`}>
           <Button
             title="Register"
             onPress={() => navigation.navigate('Register')}
           />
         </View>
-        <View className="mb-4">
+        <View style={tw`mb-4`}>
           <Button
             title="Information"
             onPress={() => navigation.navigate('Information')}
