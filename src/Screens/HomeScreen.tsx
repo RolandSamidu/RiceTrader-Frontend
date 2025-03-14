@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { View, Button, ScrollView, StatusBar } from 'react-native';
 import tw from 'twrnc';
 
