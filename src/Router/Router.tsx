@@ -9,6 +9,9 @@ import LoginScreen from '../Screens/LoginScreen';
 import { RootStackParamList } from '../types/naviagations';
 import InfoScreen from '../Screens/InfoScreen';
 import DashboardScreen from '../Screens/DashboardScreen';
+import FarmerDashboard from '../Screens/FarmerDashboard';
+import IntermediatorDashboard from '../Screens/IntermediatorDashboard';
+import RicemakerDashboard from '../Screens/RicemakerDashboard';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -22,6 +25,9 @@ const AppRouter = () => {
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Info" component={InfoScreen} />
               <Stack.Screen name="Dashboard" component={DashboardScreen} />
+            <Stack.Screen name="FarmerDashboard" component={FarmerDashboard} />
+        <Stack.Screen name="IntermediatorDashboard" component={IntermediatorDashboard} />
+        <Stack.Screen name="RicemakerDashboard" component={RicemakerDashboard} />
             </Stack.Navigator>
           </NavigationContainer>
         );
