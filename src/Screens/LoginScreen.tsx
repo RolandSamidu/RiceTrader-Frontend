@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
-import { RootStackParamList } from '../types/naviagations';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/naviagations';
+
+// Define the navigation prop type for the Login screen
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
 const LoginScreen = () => {
@@ -11,19 +13,18 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // const handleLogin = () => {
+  //   if (!email || !password) {
+  //     Alert.alert('Error', 'Please fill out all fields');
+  //     return;
+  //   }
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill out all fields');
-      return;
-    }
+  //   // Here you would typically send the data to your backend for authentication
+  //   console.log({ email, password });
 
-    // Here you would typically send the data to your backend for authentication
-    console.log({ email, password });
-
-    // Navigate to the home page or dashboard after successful login
-    navigation.navigate('Home');
-  };
+  //   // Navigate to the Dashboard screen after successful login
+  //   navigation.navigate('Dashboard');
+  // };
 
   return (
     <View style={tw`flex-1 p-4 bg-white`}>
@@ -50,7 +51,7 @@ const LoginScreen = () => {
 
       <TouchableOpacity
         style={tw`bg-blue-500 p-2 rounded mb-4`}
-        onPress={handleLogin}
+        onPress={() => navigation.navigate('Dashboard')}
       >
         <Text style={tw`text-white text-center`}>Login</Text>
       </TouchableOpacity>

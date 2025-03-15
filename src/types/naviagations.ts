@@ -5,4 +5,5 @@ export type RootStackParamList = {
     Register: undefined; // No parameters expected for the Register screen
     Home: undefined; // No parameters expected for the Home screen
     Welcome: undefined; // No parameters expected for the Welcome screen
+    Dashboard: undefined; // No parameters expected for the Dashboard screen
   };

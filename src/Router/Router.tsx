@@ -8,6 +8,7 @@ import LoginScreen from '../Screens/LoginScreen';
 
 import { RootStackParamList } from '../types/naviagations';
 import InfoScreen from '../Screens/InfoScreen';
+import DashboardScreen from '../Screens/DashboardScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -20,6 +21,7 @@ const AppRouter = () => {
               <Stack.Screen name="Register" component={RegisterScreen} />
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Info" component={InfoScreen} />
+              <Stack.Screen name="Dashboard" component={DashboardScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         );
