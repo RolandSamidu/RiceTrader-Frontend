@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet, Image } from 'react-native';
 import tw from 'twrnc';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const DashboardScreen = ({ navigation }: any) => {
   return (
@@ -27,7 +27,7 @@ const DashboardScreen = ({ navigation }: any) => {
               />
             </TouchableOpacity>
             <TouchableOpacity style={[tw`items-center mb-4`, styles.navButton]}
-              onPress={() => navigation.navigate('Dashboard')}>
+              onPress={() => navigation.navigate('Posts')}>
               <Image
                 source={require('../Images/post.png')}
                 style={tw`w-48 h-34`}
@@ -44,23 +44,34 @@ const DashboardScreen = ({ navigation }: any) => {
         </View>
       </View>
       {/* Bottom Navigation */}
-      <View style={tw`flex-row justify-around bg-white bg-opacity-20 rounded-lg p-4`}>
+      <View style={tw`flex-row justify-around items-center bg-white bg-opacity-70 rounded-lg p-3`}>
           <TouchableOpacity
            onPress={() => navigation.navigate('Home')}>
-            {/* <Icon name="home" size={24} color="white" /> */}
-            <Text style={tw`text-white text-lg`}>Home</Text>
+            <View style={tw`flex justify-center items-center`}>
+              <Ionicons name="home" size={30}  />
+              <Text >Home</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
            onPress={() => navigation.navigate('Activities')}>
-            <Text style={tw`text-white text-lg`}>Activities</Text>
+            <View style={tw`flex justify-center items-center`}>
+              <Ionicons name="bar-chart" size={30} />
+              <Text>Activities</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
            onPress={() => navigation.navigate('Notification')}>
-            <Text style={tw`text-white text-lg`}>Notification</Text>
+             <View style={tw`flex justify-center items-center`}>
+              <Ionicons name="notifications" size={30} />
+              <Text>Notification</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
            onPress={() => navigation.navigate('Profile')}>
-            <Text style={tw`text-white text-lg`}>Account</Text>
+             <View style={tw`flex justify-center items-center`}>
+              <Ionicons name="person" size={30} />
+              <Text>Account</Text>
+            </View>
           </TouchableOpacity>
         </View>
     </ImageBackground>
@@ -74,7 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   navButton: {
-    width: '40%', // Equal width for all buttons
+    width: '40%',
   },
 });
 

@@ -9,4 +9,6 @@ export type RootStackParamList = {
     Notification: undefined; // No parameters expected for the Notification screen
     Activities: undefined; // No parameters expected for the Activities screen
     Profile: undefined; // No parameters expected for the Profile screen
+    Posts: undefined; // No parameters expected for the Posts screen
+    // CreatePost: undefined; // No parameters expected for the CreatePost screen
   };
