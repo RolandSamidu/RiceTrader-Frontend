@@ -1,57 +1,81 @@
-// screens/DashboardScreen.js
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground, StyleSheet, Image } from 'react-native';
 import tw from 'twrnc';
-// import { RootStackParamList } from '../types/naviagations';
-// import { StackNavigationProp } from '@react-navigation/stack';
-// import { useNavigation } from '@react-navigation/native';
-// import BottomTabNavigator from '../Components/BottomTabNavigator';
-// import { UserContext } from '../context/UserContext';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
-const DashboardScreen = () => {
-//   const { user }:any = useContext(UserContext);
-
-//  type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
-
-//   const navigation = useNavigation<RegisterScreenNavigationProp>();
-
+const DashboardScreen = ({ navigation }: any) => {
   return (
-    <View style={tw`flex-1 p-4 bg-white`}>
-      <View style={tw`flex-row items-center mb-4`}>
-        <Image
-        //   source={{ uri: user?.profilePicture }}
-          style={tw`w-12 h-12 rounded-full mr-2`}
-        />
-        <View>
-          <Text style={tw`text-lg font-bold`}>User</Text>
-          <Text style={tw`text-sm text-gray-500`}>Farmer</Text>
+    <ImageBackground
+      source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')} // Replace with your image path
+      style={styles.backgroundImage}
+    >
+      <View style={tw`flex-1 p-4 justify-center`}>
+        {/* Welcome Section */}
+        <View style={tw`mb-8 mx-auto`}>
+          <Text style={tw`text-3xl font-bold  text-center`}>Welcome Yomal!</Text>
+          <Text style={tw`text-xl text-gray-600  text-center`}>The Farmer</Text>
+        </View>
+
+        <View style={tw`w-full mx-auto`}>
+        {/* Navigation Options */}
+          <View style={tw`flex justify-between my-4 mx-auto`}>
+            <TouchableOpacity style={[tw`items-center mb-4`, styles.navButton]}
+             onPress={() => navigation.navigate('Dashboard')}>
+              <Image
+                source={require('../Images/price.png')}
+                style={tw`w-48 h-34`}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={[tw`items-center mb-4`, styles.navButton]}
+              onPress={() => navigation.navigate('Dashboard')}>
+              <Image
+                source={require('../Images/post.png')}
+                style={tw`w-48 h-34`}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={[tw`items-center`, styles.navButton]}
+              onPress={() => navigation.navigate('Dashboard')}>
+              <Image
+                source={require('../Images/chat.png')}
+                style={tw`w-48 h-34`}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-
-      <TouchableOpacity
-        style={tw`bg-blue-500 p-4 rounded mb-4`}
-        // onPress={() => navigation.navigate('Price')}
-      >
-        <Text style={tw`text-white text-center`}>Price</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={tw`bg-green-500 p-4 rounded mb-4`}
-        // onPress={() => navigation.navigate('Post')}
-      >
-        <Text style={tw`text-white text-center`}>Post</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={tw`bg-purple-500 p-4 rounded mb-4`}
-        // onPress={() => navigation.navigate('Chat')}
-      >
-        <Text style={tw`text-white text-center`}>Chat</Text>
-      </TouchableOpacity>
-
-      {/* <BottomTabNavigator/> */}
-    </View>
+      {/* Bottom Navigation */}
+      <View style={tw`flex-row justify-around bg-white bg-opacity-20 rounded-lg p-4`}>
+          <TouchableOpacity
+           onPress={() => navigation.navigate('Home')}>
+            {/* <Icon name="home" size={24} color="white" /> */}
+            <Text style={tw`text-white text-lg`}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+           onPress={() => navigation.navigate('Activities')}>
+            <Text style={tw`text-white text-lg`}>Activities</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+           onPress={() => navigation.navigate('Notification')}>
+            <Text style={tw`text-white text-lg`}>Notification</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+           onPress={() => navigation.navigate('Profile')}>
+            <Text style={tw`text-white text-lg`}>Account</Text>
+          </TouchableOpacity>
+        </View>
+    </ImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  navButton: {
+    width: '40%', // Equal width for all buttons
+  },
+});
 
 export default DashboardScreen;

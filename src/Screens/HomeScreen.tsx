@@ -8,28 +8,28 @@ const HomeScreen = ({ navigation }: any) => {
           source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
           style={styles.backgroundImage}
         >
-    <View style={tw`flex-1 justify-center items-center mx-auto`}>
-      <View style={tw`w-full px-8 pt-8`}>
-          <TouchableOpacity
-            style={[tw`py-2 px-6 mb-5`, styles.button]}
-            onPress={() => navigation.navigate('Register')}
-          >
-            <Text style={tw`font-bold text-center text-2xl`}>Register</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[tw`py-2 px-6 mb-5 w-80`, styles.button]}
-            onPress={() => navigation.navigate('Login')}
-          >
-            <Text style={tw`font-bold text-center text-2xl`}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[tw`py-2 px-6`, styles.button]}
-            onPress={() => navigation.navigate('Informationr')}
-          >
-            <Text style={tw`font-bold text-center text-2xl`}>Information</Text>
-          </TouchableOpacity>
+      <View style={tw`flex-1 justify-center items-center mx-auto`}>
+        <View style={tw`w-full px-8 pt-8`}>
+            <TouchableOpacity
+              style={[tw`py-2 px-6 mb-5`, styles.button]}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Text style={tw`font-bold text-center text-2xl`}>Register</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[tw`py-2 px-6 mb-5 w-80`, styles.button]}
+              onPress={() => navigation.navigate('Login')}
+            >
+              <Text style={tw`font-bold text-center text-2xl`}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[tw`py-2 px-6`, styles.button]}
+              onPress={() => navigation.navigate('Informationr')}
+            >
+              <Text style={tw`font-bold text-center text-2xl`}>Information</Text>
+            </TouchableOpacity>
+        </View>
       </View>
-    </View>
     </ImageBackground>
   );
 };

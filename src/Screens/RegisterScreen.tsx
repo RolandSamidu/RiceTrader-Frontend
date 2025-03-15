@@ -139,19 +139,19 @@ const RegisterScreen = () => {
           style={tw`w-20 h-20 rounded-full mb-4`}
         />
       )} */}
-    <View style={tw`flex-1 justify-end p-5 mb-12`}>
-      <TouchableOpacity
-          style={[tw`py-2 px-6 mb-5 w-80 mx-auto`, styles.button]}
-            onPress={() => navigation.navigate('Login')}
-          >
-          <Text style={tw`font-bold text-center text-2xl`}>Next</Text>
-      </TouchableOpacity>
-      <View style={tw`flex-row justify-center items-center`}>
-            <Text style={tw`text-black-500`}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={[tw`ml-2`, styles.registerLink]}>Sign In</Text>
-            </TouchableOpacity>
-          </View>
+      <View style={tw`flex-1 justify-end p-5 mb-12`}>
+        <TouchableOpacity
+            style={[tw`py-2 px-6 mb-5 w-80 mx-auto`, styles.button]}
+              onPress={() => navigation.navigate('Login')}
+            >
+            <Text style={tw`font-bold text-center text-2xl`}>Next</Text>
+        </TouchableOpacity>
+        <View style={tw`flex-row justify-center items-center`}>
+              <Text style={tw`text-black-500`}>Already have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text style={[tw`ml-2`, styles.registerLink]}>Sign In</Text>
+              </TouchableOpacity>
+        </View>
       </View>
 
     </View>

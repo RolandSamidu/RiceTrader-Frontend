@@ -6,4 +6,7 @@ export type RootStackParamList = {
     Home: undefined; // No parameters expected for the Home screen
     Welcome: undefined; // No parameters expected for the Welcome screen
     Dashboard: undefined; // No parameters expected for the Dashboard screen
+    Notification: undefined; // No parameters expected for the Notification screen
+    Activities: undefined; // No parameters expected for the Activities screen
+    Profile: undefined; // No parameters expected for the Profile screen
   };
