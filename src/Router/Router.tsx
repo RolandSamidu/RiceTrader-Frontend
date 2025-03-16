@@ -9,9 +9,17 @@ import LoginScreen from '../Screens/LoginScreen';
 import { RootStackParamList } from '../types/naviagations';
 import InfoScreen from '../Screens/InfoScreen';
 import DashboardScreen from '../Screens/DashboardScreen';
+
 import FarmerDashboard from '../Screens/FarmerDashboard';
 import IntermideatorDashboard from '../Screens/IntermideatorDashboard';
 import RicemakerDashboard from '../Screens/RicemakerDashboard';
+
+import NotificationScreen from '../Screens/NotificationScreen';
+import ProfileScreen from '../Screens/ProfileScreen';
+import ActivitiesScreen from '../Screens/ActivitiesScreen';
+import PostsScreen from '../Screens/PostsScreen';
+// import CreatePostScreen from '../Screens/CreatePostScreen';
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -37,6 +45,13 @@ const AppRouter = () => {
                 name="RicemakerDashboard"
                 component={RicemakerDashboard}
               /> */}
+
+              <Stack.Screen name="Notification" component={NotificationScreen} />
+              <Stack.Screen name="Activities" component={ActivitiesScreen} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen name="Posts" component={PostsScreen} />
+              {/* <Stack.Screen name="CreatePost" component={CreatePostScreen} /> */}
+              {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
             </Stack.Navigator>
           </NavigationContainer>
         );
