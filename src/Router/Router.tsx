@@ -8,7 +8,6 @@ import LoginScreen from '../Screens/LoginScreen';
 
 import { RootStackParamList } from '../types/naviagations';
 import InfoScreen from '../Screens/InfoScreen';
-import DashboardScreen from '../Screens/DashboardScreen';
 
 import FarmerDashboard from '../Screens/FarmerDashboard';
 import IntermideatorDashboard from '../Screens/IntermideatorDashboard';
@@ -32,7 +31,6 @@ const AppRouter = () => {
               <Stack.Screen name="Register" component={RegisterScreen} />
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Info" component={InfoScreen} />
-              <Stack.Screen name="Dashboard" component={DashboardScreen} />
               <Stack.Screen
                 name="FarmerDashboard"
                 component={FarmerDashboard}
@@ -41,10 +39,10 @@ const AppRouter = () => {
                 name="IntermideatorDashboard"
                 component={IntermideatorDashboard}
               />
-              {/* <Stack.Screen
+              <Stack.Screen
                 name="RicemakerDashboard"
                 component={RicemakerDashboard}
-              /> */}
+              />
 
               <Stack.Screen name="Notification" component={NotificationScreen} />
               <Stack.Screen name="Activities" component={ActivitiesScreen} />

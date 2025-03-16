@@ -62,7 +62,7 @@ const LoginScreen = () => {
       } else if (data.user.role === 'Intermideator') {
         navigation.replace('IntermideatorDashboard');
       } else if (data.user.role === 'Ricemaker') {
-        navigation.replace('Ricemakerdashboard');
+        navigation.replace('RicemakerDashboard');
       } else {
         Alert.alert('Error', 'Invalid role detected');
       }
