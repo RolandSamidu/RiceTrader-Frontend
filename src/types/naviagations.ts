@@ -14,5 +14,6 @@ export type RootStackParamList = {
   IntermideatorDashboard: undefined;
   Ricemakerdashboard2: undefined;
   Ricemakerdashboard: undefined;
+  PredictPriceScreen: undefined;
 };
 

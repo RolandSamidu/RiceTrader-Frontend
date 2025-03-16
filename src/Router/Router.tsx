@@ -17,6 +17,7 @@ import NotificationScreen from '../Screens/NotificationScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import PostsScreen from '../Screens/PostsScreen';
+import PredictPriceScreen from '../Screens/PredictPriceScreen';
 // import CreatePostScreen from '../Screens/CreatePostScreen';
 
 
@@ -42,6 +43,10 @@ const AppRouter = () => {
               <Stack.Screen
                 name="Ricemakerdashboard"
                 component={RicemakerDashboard}
+              />
+              <Stack.Screen
+                name="PredictPriceScreen"
+                component={PredictPriceScreen}
               />
 
               <Stack.Screen
