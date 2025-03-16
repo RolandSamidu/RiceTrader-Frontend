@@ -37,13 +37,16 @@ const LoginScreen = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://192.168.8.102:5000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'http://192.168.8.178:5000/api/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({email, password}),
         },
-        body: JSON.stringify({email, password}),
-      });
+      );
 
       const data = await response.json();
 
@@ -59,10 +62,10 @@ const LoginScreen = () => {
       // Redirect based on role
       if (data.user.role === 'Farmer') {
         navigation.replace('FarmerDashboard');
-      } else if (data.user.role === 'Intermideator') {
+      } else if (data.user.role === 'Intermediate') {
         navigation.replace('IntermideatorDashboard');
-      } else if (data.user.role === 'Ricemaker') {
-        navigation.replace('RicemakerDashboard');
+      } else if (data.user.role === 'Rice Producer') {
+        navigation.replace('Ricemakerdashboard');
       } else {
         Alert.alert('Error', 'Invalid role detected');
       }

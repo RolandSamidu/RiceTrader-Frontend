@@ -17,7 +17,7 @@ import NotificationScreen from '../Screens/NotificationScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import PostsScreen from '../Screens/PostsScreen';
-import CreatePostScreen from '../Screens/CreatePostScreen';
+import PredictPriceScreen from '../Screens/PredictPriceScreen';
 // import CreatePostScreen from '../Screens/CreatePostScreen';
 
 
@@ -41,15 +41,22 @@ const AppRouter = () => {
                 component={IntermideatorDashboard}
               />
               <Stack.Screen
-                name="RicemakerDashboard"
+                name="Ricemakerdashboard"
                 component={RicemakerDashboard}
               />
+              <Stack.Screen
+                name="PredictPriceScreen"
+                component={PredictPriceScreen}
+              />
 
-              <Stack.Screen name="Notification" component={NotificationScreen} />
+              <Stack.Screen
+                name="Notification"
+                component={NotificationScreen}
+              />
               <Stack.Screen name="Activities" component={ActivitiesScreen} />
               <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="Posts" component={PostsScreen} />
-              <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+              {/* <Stack.Screen name="CreatePost" component={CreatePostScreen} /> */}
               {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
             </Stack.Navigator>
           </NavigationContainer>
