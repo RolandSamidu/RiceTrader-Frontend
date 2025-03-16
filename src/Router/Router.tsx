@@ -41,12 +41,15 @@ const AppRouter = () => {
                 name="IntermideatorDashboard"
                 component={IntermideatorDashboard}
               />
-              {/* <Stack.Screen
-                name="RicemakerDashboard"
+              <Stack.Screen
+                name="Ricemakerdashboard"
                 component={RicemakerDashboard}
-              /> */}
+              />
 
-              <Stack.Screen name="Notification" component={NotificationScreen} />
+              <Stack.Screen
+                name="Notification"
+                component={NotificationScreen}
+              />
               <Stack.Screen name="Activities" component={ActivitiesScreen} />
               <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="Posts" component={PostsScreen} />

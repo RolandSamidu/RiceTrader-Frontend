@@ -18,7 +18,7 @@ const RicemakerDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const role = await AsyncStorage.getItem('role');
-      if (role !== 'Ricemaker') {
+      if (role !== 'Rice Producer') {
         Alert.alert('Unauthorized', 'You are not allowed here!');
         navigation.replace('Login');
       }
