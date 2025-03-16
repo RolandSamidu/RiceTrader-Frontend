@@ -8,7 +8,7 @@ export type RootStackParamList = {
     Activities: undefined;
     Profile: undefined;
     Posts: undefined;
-    // CreatePost: undefined;
+    CreatePost: undefined;
     FarmerDashboard: undefined;
     IntermideatorDashboard: undefined;
     RicemakerDashboard: undefined;

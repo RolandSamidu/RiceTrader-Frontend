@@ -17,6 +17,7 @@ import NotificationScreen from '../Screens/NotificationScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import PostsScreen from '../Screens/PostsScreen';
+import CreatePostScreen from '../Screens/CreatePostScreen';
 // import CreatePostScreen from '../Screens/CreatePostScreen';
 
 
@@ -48,7 +49,7 @@ const AppRouter = () => {
               <Stack.Screen name="Activities" component={ActivitiesScreen} />
               <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="Posts" component={PostsScreen} />
-              {/* <Stack.Screen name="CreatePost" component={CreatePostScreen} /> */}
+              <Stack.Screen name="CreatePost" component={CreatePostScreen} />
               {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
             </Stack.Navigator>
           </NavigationContainer>

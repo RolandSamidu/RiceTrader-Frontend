@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+const PostsScreen = ({ navigation }: any) => {
 
-const PostsScreen = () => {
-  const [posts, setPosts] = useState([]);
+    const examplePost = {
+      id: 'example-1',
+      date: '16 Mar 2025',
+      time: '10:30 AM',
+      breadType: 'Basmati',
+      kg: '500',
+      expectedPrice: '60',
+      description: 'High quality basmati rice from organic farming. Ready for delivery next week.',
+      bidCount: 6,
+      imageUri: null,
+    };
+
+  const [posts, setPosts] = useState([examplePost]);
   // const navigation = useNavigation();
 
   // Load posts from storage when screen is focused
@@ -73,26 +85,37 @@ const PostsScreen = () => {
       </View>
 
       <View style={tw`flex-row`}>
-        <Image
-          source={{ uri: item.imageUri || 'https://via.placeholder.com/100' }}
-          style={tw`w-20 h-20 rounded-lg mr-4`}
-        />
+        {item.imageUri ? (
+          <Image
+            source={{ uri: item.imageUri }}
+            style={tw`w-20 h-20 rounded-lg mr-4`}
+          />
+        ) : (
+          // Use local image from Images folder for example post
+          <Image
+            source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
+            style={tw`w-20 h-20 rounded-lg mr-4`}
+          />
+        )}
         <View style={tw`flex-1`}>
           <Text style={tw`font-semibold`}>Bread - {item.breadType}</Text>
           <Text>Kg - {item.kg}</Text>
           <Text>expect price - {item.expectedPrice}/kg</Text>
           <Text>description - {item.description}</Text>
-          <Text style={tw`text-gray-500 mt-1`}>BID: {item.bidCount || 4}</Text>
+          <Text style={tw`text-gray-500 mt-1`}>BID count: {item.bidCount || 4}</Text>
         </View>
       </View>
     </View>
   );
 
   return (
-    <View style={tw`flex-1 bg-gray-100`}>
-      <View style={tw`px-4 py-2 bg-white border-b border-gray-200`}>
-        <Text style={tw`text-sm text-gray-500`}>The Farmer</Text>
-        <Text style={tw`text-xl font-semibold`}>POST</Text>
+    <ImageBackground
+      source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
+      style={tw`flex-1`}
+    >
+    <View style={tw`flex-1`}>
+      <View style={tw`p-4 bg-black bg-opacity-60`}>
+        <Text style={tw`text-white text-2xl font-bold`}>My Posts</Text>
       </View>
 
       <FlatList
@@ -104,11 +127,12 @@ const PostsScreen = () => {
 
       <TouchableOpacity
         style={tw`absolute bottom-6 right-6 bg-gray-800 w-14 h-14 rounded-full justify-center items-center shadow-lg`}
-        // onPress={navigateToCreatePost}
+        onPress={() => navigation.navigate('CreatePost')}
       >
         <Ionicons name="add" size={30} color="white" />
       </TouchableOpacity>
     </View>
+    </ImageBackground>
   );
 };
 
