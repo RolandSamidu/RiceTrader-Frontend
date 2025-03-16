@@ -1,4 +1,3 @@
-// types/navigation.ts
 export type RootStackParamList = {
   Info: undefined; // No parameters expected for the Info screen
   Login: undefined; // No parameters expected for the Login screen
