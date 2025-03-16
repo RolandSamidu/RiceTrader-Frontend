@@ -9,11 +9,17 @@ import LoginScreen from '../Screens/LoginScreen';
 import { RootStackParamList } from '../types/naviagations';
 import InfoScreen from '../Screens/InfoScreen';
 import DashboardScreen from '../Screens/DashboardScreen';
+
+import FarmerDashboard from '../Screens/FarmerDashboard';
+import IntermideatorDashboard from '../Screens/IntermideatorDashboard';
+import RicemakerDashboard from '../Screens/RicemakerDashboard';
+
 import NotificationScreen from '../Screens/NotificationScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import PostsScreen from '../Screens/PostsScreen';
 // import CreatePostScreen from '../Screens/CreatePostScreen';
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -27,6 +33,19 @@ const AppRouter = () => {
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Info" component={InfoScreen} />
               <Stack.Screen name="Dashboard" component={DashboardScreen} />
+              <Stack.Screen
+                name="FarmerDashboard"
+                component={FarmerDashboard}
+              />
+              <Stack.Screen
+                name="IntermideatorDashboard"
+                component={IntermideatorDashboard}
+              />
+              {/* <Stack.Screen
+                name="RicemakerDashboard"
+                component={RicemakerDashboard}
+              /> */}
+
               <Stack.Screen name="Notification" component={NotificationScreen} />
               <Stack.Screen name="Activities" component={ActivitiesScreen} />
               <Stack.Screen name="Profile" component={ProfileScreen} />

@@ -11,4 +11,8 @@ export type RootStackParamList = {
     Profile: undefined; // No parameters expected for the Profile screen
     Posts: undefined; // No parameters expected for the Posts screen
     // CreatePost: undefined; // No parameters expected for the CreatePost screen
+    FarmerDashboard: undefined;
+    IntermideatorDashboard: undefined;
+    Ricemakerdashboard: undefined;
   };
+
