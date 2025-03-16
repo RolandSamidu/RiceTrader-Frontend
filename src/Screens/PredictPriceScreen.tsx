@@ -72,6 +72,7 @@ const PredictPriceScreen = () => {
               key =>
                 key !== 'date' && (
                   <Text key={key} style={tw`text-center text-lg mt-1`}>
+                    {/* @ts-ignore */}
                     {key}: {prediction[key].toFixed(2)} LKR
                   </Text>
                 ),

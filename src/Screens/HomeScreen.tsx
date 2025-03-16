@@ -26,11 +26,6 @@ const HomeScreen = ({ navigation }: any) => {
             <Text style={tw`font-bold text-center text-2xl`}>Information</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[tw`py-2 px-6 mb-5 w-80`, styles.button]}
-            onPress={() => navigation.navigate('PredictPriceScreen')}>
-            <Text style={tw`font-bold text-center text-2xl`}>Price</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>

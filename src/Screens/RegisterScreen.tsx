@@ -38,7 +38,7 @@ const RegisterScreen = () => {
       lastName,
       email,
       password,
-      profilePicture: '', 
+      profilePicture: '',
       role: profileType,
     };
 
@@ -120,7 +120,7 @@ const RegisterScreen = () => {
           <TouchableOpacity
             style={[tw`py-2 px-6 mb-5 w-80 mx-auto`, styles.button]}
             onPress={handleRegister}>
-            <Text style={tw`font-bold text-center text-2xl`}>Next</Text>
+            <Text style={tw`font-bold text-center text-2xl`}>Register</Text>
           </TouchableOpacity>
           <View style={tw`flex-row justify-center items-center`}>
             <Text style={tw`text-black-500`}>Already have an account?</Text>
