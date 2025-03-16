@@ -7,7 +7,7 @@ import {
   Alert,
   StyleSheet,
   ActivityIndicator,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -37,7 +37,7 @@ const LoginScreen = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://192.168.8.178:5000/api/auth/login', {
+      const response = await fetch('http://192.168.8.102:5000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,9 +48,8 @@ const LoginScreen = () => {
       const data = await response.json();
 
       if (!response.ok) {
-         console.log(data.message,"login failed");
+         console.log(data.message,'login failed');
         throw new Error(data.message || 'Login failed');
-       
       }
 
       // Store token in AsyncStorage
@@ -68,6 +67,7 @@ const LoginScreen = () => {
         Alert.alert('Error', 'Invalid role detected');
       }
     } catch (error) {
+      //@ts-ignore
       Alert.alert('Login Failed', error.message || 'Something went wrong');
     } finally {
       setLoading(false);
@@ -102,30 +102,18 @@ const LoginScreen = () => {
           secureTextEntry
         />
 
-      <TouchableOpacity
-        style={tw`bg-blue-500 p-2 rounded mb-4`}
-        onPress={handleLogin}
-        disabled={loading}>
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={tw`text-white text-center`}>Login</Text>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={tw`text-blue-500 text-center`}>
-          Don't have an account? Register
-        </Text>
-      </TouchableOpacity>
     </View>
 
         <View style={tw`flex-1 justify-end p-5 mb-12`}>
         <TouchableOpacity
             style={[tw`py-2 px-6 mb-5 w-80 mx-auto`, styles.button]}
-              onPress={() => navigation.navigate('Dashboard')}
-            >
-            <Text style={tw`font-bold text-center text-2xl`}>Sign In</Text>
+            onPress={handleLogin}
+            disabled={loading}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={tw`text-xl font-bold text-center`}>Sign In</Text>
+            )}
         </TouchableOpacity>
         <View style={tw`flex-row justify-center items-center`}>
                 <Text style={tw`text-black-500`}>Don't have an account?</Text>
@@ -135,7 +123,6 @@ const LoginScreen = () => {
         </View>
       </View>
 
-      </View>
       </ImageBackground>
   );
 };

@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const DashboardScreen = ({ navigation }: any) => {
   return (
     <ImageBackground
-      source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')} // Replace with your image path
+      source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
       style={styles.backgroundImage}
     >
       <View style={tw`flex-1 p-4 justify-center`}>
