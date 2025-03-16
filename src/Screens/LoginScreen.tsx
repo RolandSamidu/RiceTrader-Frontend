@@ -62,7 +62,7 @@ const LoginScreen = () => {
       // Redirect based on role
       if (data.user.role === 'Farmer') {
         navigation.replace('FarmerDashboard');
-      } else if (data.user.role === 'Intermideator') {
+      } else if (data.user.role === 'Intermediate') {
         navigation.replace('IntermideatorDashboard');
       } else if (data.user.role === 'Ricemaker') {
         navigation.replace('Ricemakerdashboard');

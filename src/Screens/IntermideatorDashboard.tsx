@@ -18,7 +18,7 @@ const IntermideatorDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const role = await AsyncStorage.getItem('role');
-      if (role !== 'Intermideator') {
+      if (role !== 'Intermediate') {
         Alert.alert('Unauthorized', 'You are not allowed here!');
         navigation.replace('Login');
       }
