@@ -38,7 +38,7 @@ const LoginScreen = () => {
 
     try {
       const response = await fetch(
-        'http://192.168.8.178:5000/api/auth/login',
+        'http://192.168.8.102:5000/api/auth/login',
         {
           method: 'POST',
           headers: {
@@ -65,7 +65,7 @@ const LoginScreen = () => {
       } else if (data.user.role === 'Intermediate') {
         navigation.replace('IntermideatorDashboard');
       } else if (data.user.role === 'Rice Producer') {
-        navigation.replace('RicemakerDashboard');
+        navigation.replace('RiceMakerDashboard');
       } else {
         Alert.alert('Error', 'Invalid role detected');
       }

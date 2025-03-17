@@ -1,15 +1,27 @@
 
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import tw from 'twrnc';
+import { RootStackParamList } from '../types/naviagations';
 
-const BottomTabNavigator = ({ navigation }: any) => {
-  return (
+interface BottomTabNavigatorProps {
+  homeUrl: string;
+}
+type LoginScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;
 
+const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({ homeUrl }) => {
+const navigation = useNavigation<LoginScreenNavigationProp>();
+  return(
    <View style={tw`flex-row justify-around items-center bg-white bg-opacity-70 rounded-lg p-3`}>
    <TouchableOpacity
-    onPress={() => navigation.navigate('Home')}>
+   //@ts-ignore
+    onPress={() => navigation.navigate(`${homeUrl}`)}>
      <View style={tw`flex justify-center items-center`}>
        <Ionicons name="home" size={30}  />
        <Text >Home</Text>

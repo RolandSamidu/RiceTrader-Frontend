@@ -19,6 +19,8 @@ import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import PostsScreen from '../Screens/PostsScreen';
 import PredictPriceScreen from '../Screens/PredictPriceScreen';
 import CreatePostScreen from '../Screens/CreatePostScreen';
+import IntermideatorPosts from '../Screens/IntermideatorPosts';
+import RiceMakerPosts from '../Screens/RiceMakerPosts';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -41,7 +43,7 @@ const AppRouter = () => {
                 component={IntermideatorDashboard}
               />
               <Stack.Screen
-                name="RicemakerDashboard"
+                name="RiceMakerDashboard"
                 component={RicemakerDashboard}
               />
               <Stack.Screen
@@ -57,6 +59,8 @@ const AppRouter = () => {
               <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="Posts" component={PostsScreen} />
               <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+              <Stack.Screen name="IntermideatorPosts" component={IntermideatorPosts} />
+              <Stack.Screen name="RiceMakerPosts" component={RiceMakerPosts} />
               {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
             </Stack.Navigator>
           </NavigationContainer>

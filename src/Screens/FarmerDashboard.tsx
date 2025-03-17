@@ -105,7 +105,7 @@ const FarmerDashboard = () => {
     </View>
 
     {/* Bottom Navigation */}
-    <BottomTabNavigator />
+    <BottomTabNavigator homeUrl="FarmerDashboard"/>
   </ImageBackground>
 );
 };

@@ -82,7 +82,7 @@ const IntermideatorDashboard = () => {
 
           <TouchableOpacity
             style={tw`bg-white bg-opacity-90 w-40 p-5 rounded-2xl items-center mb-4 shadow-lg`}
-            onPress={() => navigation.navigate('Posts')}
+            onPress={() => navigation.navigate('IntermideatorPosts')}
           >
             <Image
               source={require('../Images/post.png')}
@@ -105,7 +105,7 @@ const IntermideatorDashboard = () => {
       </View>
 
       {/* Bottom Navigation */}
-      <BottomTabNavigator />
+      <BottomTabNavigator homeUrl="IntermideatorDashboard"/>
     </ImageBackground>
   );
 };

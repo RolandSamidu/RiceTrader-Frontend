@@ -11,7 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type DashboardNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'RicemakerDashboard'
+  'RiceMakerDashboard'
 >;
 
 const RicemakerDashboard = () => {
@@ -82,7 +82,7 @@ const RicemakerDashboard = () => {
 
           <TouchableOpacity
             style={tw`bg-white bg-opacity-90 w-40 p-5 rounded-2xl items-center mb-4 shadow-lg`}
-            onPress={() => navigation.navigate('Posts')}
+            onPress={() => navigation.navigate('RiceMakerPosts')}
           >
             <Image
               source={require('../Images/post.png')}
@@ -93,7 +93,7 @@ const RicemakerDashboard = () => {
 
           <TouchableOpacity
             style={tw`bg-white bg-opacity-90 w-40 p-5 rounded-2xl items-center mb-4 shadow-lg`}
-            onPress={() => navigation.navigate('Posts')}
+            onPress={() => navigation.navigate('RiceMakerPosts')}
           >
             <Image
               source={require('../Images/chat.png')}
@@ -105,7 +105,7 @@ const RicemakerDashboard = () => {
       </View>
 
       {/* Bottom Navigation */}
-      <BottomTabNavigator />
+      <BottomTabNavigator homeUrl="RiceMakerDashboard"/>
     </ImageBackground>
   );
 };
