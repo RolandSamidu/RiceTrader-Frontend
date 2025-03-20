@@ -3,10 +3,9 @@ import { View, Text, FlatList, TouchableOpacity, Image, ImageBackground } from '
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomTabNavigator from '../Components/BottomTabNavigator';
 
-const RiceMakerPosts = ({ navigation }: any) => {
+const RiceMakerPosts = () => {
 
     const examplePost = {
       id: 'example-1',
@@ -99,7 +98,7 @@ const RiceMakerPosts = ({ navigation }: any) => {
           />
         )}
         <View style={tw`flex-1`}>
-          <Text style={tw`font-semibold`}>Bread - {item.breadType}</Text>
+          <Text style={tw`font-semibold`}>Breed - {item.breadType}</Text>
           <Text>Kg - {item.kg}</Text>
           <Text>expect price - {item.expectedPrice}/kg</Text>
           <Text>description - {item.description}</Text>
@@ -126,12 +125,6 @@ const RiceMakerPosts = ({ navigation }: any) => {
         contentContainerStyle={tw`p-4`}
       />
 
-      <TouchableOpacity
-        style={tw`absolute bottom-6 right-6 bg-gray-800 w-14 h-14 rounded-full justify-center items-center shadow-lg`}
-        onPress={() => navigation.navigate('CreatePost')}
-      >
-        <Ionicons name="add" size={30} color="white" />
-      </TouchableOpacity>
     </View>
      {/* Bottom Navigation */}
      <BottomTabNavigator homeUrl="RiceMakerDashboard"/>
