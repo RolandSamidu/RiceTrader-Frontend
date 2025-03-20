@@ -98,7 +98,7 @@ const PostsScreen = ({ navigation }: any) => {
           />
         )}
         <View style={tw`flex-1`}>
-          <Text style={tw`font-semibold`}>Bread - {item.breadType}</Text>
+          <Text style={tw`font-semibold`}>Breed - {item.breadType}</Text>
           <Text>Kg - {item.kg}</Text>
           <Text>expect price - {item.expectedPrice}/kg</Text>
           <Text>description - {item.description}</Text>

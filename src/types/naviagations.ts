@@ -16,5 +16,6 @@ export type RootStackParamList = {
   Price: undefined;
   IntermideatorPosts:undefined;
   RiceMakerPosts:undefined
+  IntermideatorCreatePost:undefined
 };
 

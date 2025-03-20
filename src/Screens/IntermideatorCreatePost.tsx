@@ -18,13 +18,13 @@ import axios from 'axios';
 
 const API_URL = 'http://192.168.8.102:5000';
 
-const CreatePostScreen = ({ navigation }: any) => {
+const IntermideatorCreatePost = ({ navigation }: any) => {
   const [breed, setBreed] = useState('');
   const [kilogram, setKilogram] = useState('');
   const [expectedPrice, setExpectedPrice] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  // const [image, setImage] = useState(null);
+//   const [image, setImage] = useState(null);
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -202,5 +202,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreatePostScreen;
+export default IntermideatorCreatePost;
 

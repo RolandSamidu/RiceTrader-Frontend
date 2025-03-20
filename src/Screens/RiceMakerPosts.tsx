@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { View, Text, FlatList, Image, ImageBackground } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
@@ -69,19 +69,6 @@ const RiceMakerPosts = () => {
     <View style={tw`bg-white mb-4 p-4 rounded-lg shadow-sm`}>
       <View style={tw`flex-row justify-between items-center mb-2`}>
         <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
-        <View style={tw`flex-row`}>
-          <TouchableOpacity
-            style={tw`mr-2`}
-            // onPress={() => handleEdit(item)}
-          >
-            <Text style={tw`text-blue-500`}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          // onPress={() => handleDelete(item.id)}
-          >
-            <Text style={tw`text-red-500`}>DELETE</Text>
-          </TouchableOpacity>
-        </View>
       </View>
 
       <View style={tw`flex-row`}>
