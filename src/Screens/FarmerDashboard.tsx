@@ -85,7 +85,7 @@ const FarmerDashboard = () => {
 
           <TouchableOpacity
             style={tw`bg-white bg-opacity-90 w-40 p-5 rounded-2xl items-center mb-4 shadow-lg`}
-            onPress={() => navigation.navigate('FarmerCreatePost')}>
+            onPress={() => navigation.navigate('Posts')}>
             <Image
               source={require('../Images/post.png')}
               style={tw`w-28 h-20 mb-4`}

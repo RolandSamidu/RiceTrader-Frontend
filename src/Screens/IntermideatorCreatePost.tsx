@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
-import IntermideatorCreatePost from './RiceMakerPosts';
 
-const IntermideatorCreate = ({navigation}) => {
+const IntermideatorCreate = ({navigation}:any) => {
   const [breed, setBreed] = useState('');
   const [expectedPrice, setExpectedPrice] = useState('');
   const [kilogram, setKilogram] = useState('');

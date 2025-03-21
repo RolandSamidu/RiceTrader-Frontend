@@ -20,7 +20,7 @@ import PredictPriceScreen from '../Screens/PredictPriceScreen';
 import CreatePostScreen from '../Screens/CreatePostScreen';
 import IntermideatorPosts from '../Screens/IntermideatorPosts';
 import RiceMakerPosts from '../Screens/RiceMakerPosts';
-import IntermideatorCreatePost from '../Screens/IntermideatorCreatePost';
+// import IntermideatorCreatePost from '../Screens/IntermideatorCreatePost';
 import IntermideatorCreate from '../Screens/IntermideatorCreatePost';
 import FarmerPostsPage from '../Screens/BidingFarmer';
 
@@ -64,7 +64,7 @@ const AppRouter = () => {
               />
               <Stack.Screen
                 name="IntermideatorPosts"
-                component={IntermideatorCreatePost}
+                component={IntermideatorPosts}
               />
               <Stack.Screen name="RiceMakerPosts" component={RiceMakerPosts} />
               <Stack.Screen

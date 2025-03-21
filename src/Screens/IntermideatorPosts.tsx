@@ -67,24 +67,7 @@ const IntermideatorPosts = ({ navigation }: any) => {
 
     //@ts-ignore
   const renderItem = ({ item }) => (
-    <View style={tw`bg-white mb-4 p-4 rounded-lg shadow-sm`}>
-      <View style={tw`flex-row justify-between items-center mb-2`}>
-        <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
-        <View style={tw`flex-row`}>
-          <TouchableOpacity
-            style={tw`mr-2`}
-            // onPress={() => handleEdit(item)}
-          >
-            <Text style={tw`text-blue-500`}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          // onPress={() => handleDelete(item.id)}
-          >
-            <Text style={tw`text-red-500`}>DELETE</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
+    <View style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
       <View style={tw`flex-row`}>
         {item.imageUri ? (
           <Image
@@ -99,13 +82,28 @@ const IntermideatorPosts = ({ navigation }: any) => {
           />
         )}
         <View style={tw`flex-1`}>
-          <Text style={tw`font-semibold`}>Breed - {item.breadType}</Text>
-          <Text>Kg - {item.kg}</Text>
-          <Text>expect price - {item.expectedPrice}/kg</Text>
-          <Text>description - {item.description}</Text>
+          <Text><Text style={tw`font-semibold`}>Breed - </Text>{item.breed}</Text>
+          <Text><Text style={tw`font-semibold`}>Kg - </Text>{item.kilogram}</Text>
+          <Text><Text style={tw`font-semibold`}>Expect price - </Text>{item.expectedPrice}/kg</Text>
+          <Text><Text style={tw`font-semibold`}>Description - </Text>{item.description}</Text>
           <Text style={tw`text-gray-500 mt-1`}>BID count: {item.bidCount || 4}</Text>
         </View>
       </View>
+      {/* <View style={tw`flex-row justify-between items-center mt-2`}>
+        <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
+        <View style={tw`flex-row gap-2`}>
+          <TouchableOpacity
+            onPress={() => handleEdit(item)}
+            style={tw`bg-blue-500 px-3 py-1 rounded-lg`}>
+            <Text style={tw`text-white`}>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleDelete(item._id)}
+            style={tw`bg-red-500 px-3 py-1 rounded-lg`}>
+            <Text style={tw`text-white`}>Delete</Text>
+          </TouchableOpacity>
+        </View>
+      </View> */}
     </View>
   );
 
@@ -116,14 +114,14 @@ const IntermideatorPosts = ({ navigation }: any) => {
     >
     <View style={tw`flex-1`}>
       <View style={tw`p-4 bg-black bg-opacity-60`}>
-        <Text style={tw`text-white text-2xl font-bold`}>Farmer Posts</Text>
+        <Text style={tw`text-white text-2xl font-bold`}>Farmers Posts</Text>
       </View>
 
       <FlatList
         data={posts}
         renderItem={renderItem}
         keyExtractor={(item: { id: any; }) => item.id}
-        contentContainerStyle={tw`p-4`}
+        // contentContainerStyle={tw`p-4`}
       />
 
       <TouchableOpacity
