@@ -1,99 +1,95 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
 
-const CreatePostScreen = ({navigation}) => {
-  const [breed, setBreed] = useState('');
-  const [expectedPrice, setExpectedPrice] = useState('');
-  const [kilogram, setKilogram] = useState('');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+const PostsScreen = ({navigation}) => {
+  const [posts, setPosts] = useState([]);
 
-  const handleSubmit = async () => {
-    const token = await AsyncStorage.getItem('token');
-    if (!token) {
-      Alert.alert('Error', 'No authorization token found. Please log in.');
-      return;
-    }
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-    const postData = {
-      breed,
-      expectedPrice: Number(expectedPrice),
-      kilogram: Number(kilogram),
-      location,
-      description,
-    };
-
+  const fetchPosts = async () => {
     try {
-      const response = await fetch(
-        'http://192.168.1.10:5000/api/posts/create',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-          body: JSON.stringify(postData),
-        },
+      const token = await AsyncStorage.getItem('token');
+      const response = await axios.get(
+        'http://192.168.1.10:5000/api/posts/byuser/67c9d4dffe39d733316b62dd',
+        // {
+        //   headers: {Authorization: token},
+        // },
       );
-
-      const result = await response.json();
-      if (response.ok) {
-        Alert.alert('Success', 'Post created successfully!');
-        navigation.goBack();
-      } else {
-        Alert.alert('Error', result.message || 'Failed to create post');
-      }
+      setPosts(response.data);
     } catch (error) {
-      console.error('Error:', error);
-      Alert.alert('Error', 'Something went wrong!');
+      console.error('Error fetching posts:', error);
     }
   };
 
+  const handleDelete = async postId => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      await axios.delete(
+        `http://192.168.1.10:5000/api/posts/delete/${postId}`,
+        {
+          headers: {Authorization: token},
+        },
+      );
+      Alert.alert('Success', 'Post deleted successfully');
+      fetchPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
+
+  const handleEdit = post => {
+    navigation.navigate('EditPost', {post});
+  };
+
+  const renderItem = ({item}) => (
+    <View
+      style={tw`bg-white mb-4 p-4 rounded-lg shadow-md border border-gray-300`}>
+      <Text style={tw`text-gray-500 mb-2`}>
+        {item.breed} - {item.location}
+      </Text>
+      <Text style={tw`text-lg font-semibold`}>
+        Price: {item.expectedPrice}/kg
+      </Text>
+      <Text>Kilogram: {item.kilogram}</Text>
+      <Text style={tw`text-gray-600`}>{item.description}</Text>
+      <View style={tw`flex-row justify-between mt-2`}>
+        <TouchableOpacity
+          onPress={() => handleEdit(item)}
+          style={tw`bg-blue-500 px-3 py-1 rounded-lg`}>
+          <Text style={tw`text-white`}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleDelete(item._id)}
+          style={tw`bg-red-500 px-3 py-1 rounded-lg`}>
+          <Text style={tw`text-white`}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
   return (
-    <View style={tw`flex-1 p-4 bg-white`}>
-      <Text style={tw`text-xl font-bold mb-4`}>Create a Post</Text>
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Breed"
-        value={breed}
-        onChangeText={setBreed}
+    <View style={tw`flex-1 p-4 bg-gray-100`}>
+      <Text style={tw`text-2xl font-bold mb-4`}>My Posts</Text>
+      <FlatList
+        data={posts}
+        renderItem={renderItem}
+        keyExtractor={item => item._id}
       />
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Expected Price"
-        value={expectedPrice}
-        onChangeText={setExpectedPrice}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Kilogram"
-        value={kilogram}
-        onChangeText={setKilogram}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Location"
-        value={location}
-        onChangeText={setLocation}
-      />
-      <TextInput
-        style={tw`border p-2 mb-4`}
-        placeholder="Description"
-        value={description}
-        onChangeText={setDescription}
-        multiline
-      />
-      <TouchableOpacity
-        style={tw`bg-blue-500 p-3 rounded`}
-        onPress={handleSubmit}>
-        <Text style={tw`text-white text-center`}>Submit</Text>
-      </TouchableOpacity>
     </View>
   );
 };
 
-export default CreatePostScreen;
+export default PostsScreen;

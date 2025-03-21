@@ -14,8 +14,9 @@ export type RootStackParamList = {
   IntermideatorDashboard: undefined;
   RiceMakerDashboard: undefined;
   Price: undefined;
-  IntermideatorPosts:undefined;
-  RiceMakerPosts:undefined
-  IntermideatorCreatePost:undefined
+  IntermideatorPosts: undefined;
+  RiceMakerPosts: undefined;
+  IntermideatorCreatePost: undefined;
+  FarmerCreatePost: undefined;
 };
 
