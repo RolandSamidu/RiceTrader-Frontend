@@ -18,5 +18,6 @@ export type RootStackParamList = {
   RiceMakerPosts: undefined;
   IntermideatorCreatePost: undefined;
   FarmerCreatePost: undefined;
+  FarmerPostsPage: undefined;
 };
 
