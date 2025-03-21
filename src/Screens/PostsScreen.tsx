@@ -4,16 +4,22 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Image,
+  Modal,
+  TextInput,
   Alert,
+  Button,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 
 const PostsScreen = ({navigation}) => {
   const [posts, setPosts] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [updatedBreed, setUpdatedBreed] = useState('');
+  const [updatedPrice, setUpdatedPrice] = useState('');
+  const [updatedDescription, setUpdatedDescription] = useState('');
 
   useEffect(() => {
     fetchPosts();
@@ -24,9 +30,6 @@ const PostsScreen = ({navigation}) => {
       const id = await AsyncStorage.getItem('id');
       const response = await axios.get(
         `http://192.168.1.10:5000/api/posts/byuser/${id}`,
-        // {
-        //   headers: {Authorization: token},
-        // },
       );
       setPosts(response.data);
     } catch (error) {
@@ -51,7 +54,38 @@ const PostsScreen = ({navigation}) => {
   };
 
   const handleEdit = post => {
-    navigation.navigate('EditPost', {post});
+    setSelectedPost(post);
+    setUpdatedBreed(post.breed);
+    setUpdatedPrice(post.expectedPrice.toString());
+    setUpdatedDescription(post.description);
+    setModalVisible(true); // Open the modal
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const updatedPost = {
+        breed: updatedBreed,
+        expectedPrice: parseFloat(updatedPrice),
+        description: updatedDescription,
+      };
+
+      // Send the updated post to the backend
+      await axios.put(
+        `http://192.168.1.10:5000/api/posts/update/${selectedPost._id}`,
+        updatedPost,
+        {
+          headers: {Authorization: `${token}`},
+        },
+      );
+
+      Alert.alert('Success', 'Post updated successfully');
+      setModalVisible(false); // Close the modal
+      fetchPosts();
+    } catch (error) {
+      console.error('Error updating post:', error);
+      Alert.alert('Error', 'Failed to update post');
+    }
   };
 
   const renderItem = ({item}) => (
@@ -88,6 +122,43 @@ const PostsScreen = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item._id}
       />
+
+      {/* Modal for editing post */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}>
+        <View
+          style={tw`flex-1 justify-center items-center bg-black opacity-50`}>
+          <View style={tw`bg-white p-6 rounded-lg shadow-md`}>
+            <Text style={tw`text-xl font-bold mb-4`}>Edit Post</Text>
+            <TextInput
+              style={tw`border border-gray-300 p-2 mb-4 rounded`}
+              placeholder="Breed"
+              value={updatedBreed}
+              onChangeText={setUpdatedBreed}
+            />
+            <TextInput
+              style={tw`border border-gray-300 p-2 mb-4 rounded`}
+              placeholder="Expected Price"
+              keyboardType="numeric"
+              value={updatedPrice}
+              onChangeText={setUpdatedPrice}
+            />
+            <TextInput
+              style={tw`border border-gray-300 p-2 mb-4 rounded`}
+              placeholder="Description"
+              value={updatedDescription}
+              onChangeText={setUpdatedDescription}
+            />
+            <View style={tw`flex-row justify-between`}>
+              <Button title="Cancel" onPress={() => setModalVisible(false)} />
+              <Button title="Save" onPress={handleUpdate} />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
