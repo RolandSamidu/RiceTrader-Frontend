@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomTabNavigator from '../Components/BottomTabNavigator';
@@ -15,14 +14,8 @@ const IntermideatorPosts = ({ navigation }: any) => {
 
   const fetchPosts = async () => {
     try {
-      const role = await AsyncStorage.getItem('role');
-      console.log('role',role);
-      if (!role) {
-        console.warn('No user role found in AsyncStorage');
-        return;
-      }
       const response = await axios.get(
-        `http://192.168.8.102:5000/api/posts/byRole/${role}`,
+        'http://192.168.8.102:5000/api/posts/byRole/Farmer',
       );
       if (response.data && Array.isArray(response.data)) {
         //@ts-ignore
@@ -81,7 +74,6 @@ const IntermideatorPosts = ({ navigation }: any) => {
         keyExtractor={(item: { id: any; }) => item.id}
         // contentContainerStyle={tw`p-4`}
       />
-
       <TouchableOpacity
         style={tw`absolute bottom-6 right-6 bg-gray-800 w-14 h-14 rounded-full justify-center items-center shadow-lg`}
         onPress={() => navigation.navigate('CreatePost')}
