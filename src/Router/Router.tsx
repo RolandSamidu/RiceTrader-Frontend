@@ -21,6 +21,7 @@ import CreatePostScreen from '../Screens/CreatePostScreen';
 import IntermideatorPosts from '../Screens/IntermideatorPosts';
 import RiceMakerPosts from '../Screens/RiceMakerPosts';
 import IntermideatorCreatePost from '../Screens/IntermideatorCreatePost';
+import IntermideatorCreate from '../Screens/IntermideatorCreatePost';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -58,11 +59,11 @@ const AppRouter = () => {
               <Stack.Screen name="CreatePost" component={CreatePostScreen} />
               <Stack.Screen
                 name="IntermideatorCreatePost"
-                component={IntermideatorCreatePost}
+                component={IntermideatorCreate}
               />
               <Stack.Screen
                 name="IntermideatorPosts"
-                component={IntermideatorPosts}
+                component={IntermideatorCreatePost}
               />
               <Stack.Screen name="RiceMakerPosts" component={RiceMakerPosts} />
               <Stack.Screen
