@@ -50,7 +50,7 @@ const RicemakerDashboard = () => {
     >
       {/* Header with Logout Button */}
       <View style={tw`flex-row justify-between items-center p-4 bg-black bg-opacity-60`}>
-        <Text style={tw`text-white text-2xl font-bold`}>Ricemaker Dashboard</Text>
+        <Text style={tw`text-white text-2xl font-bold`}>Rice Producer Dashboard</Text>
         <TouchableOpacity
           onPress={handleLogout}
           style={tw`bg-red-500 p-3 rounded-full shadow-lg`}

@@ -18,19 +18,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const PostsScreen = ({ navigation }: any) => {
 
-  const examplePost = {
-    id: 'example-1',
-    date: '16 Mar 2025',
-    time: '10:30 AM',
-    breed: 'Basmati',
-    kilogram: '500',
-    expectedPrice: '60',
-    description: 'High quality basmati rice from organic farming. Ready for delivery next week.',
-    imageUri: null,
-  };
-
-
-  const [posts, setPosts] = useState([examplePost]);
+  const [posts, setPosts] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [updatedBreed, setUpdatedBreed] = useState('');
@@ -44,7 +32,6 @@ const PostsScreen = ({ navigation }: any) => {
   const fetchPosts = async () => {
     try {
       const id = await AsyncStorage.getItem('id');
-      console.log('id',id)
       if (!id) {
         console.warn('No user ID found in AsyncStorage');
         return;
@@ -53,16 +40,16 @@ const PostsScreen = ({ navigation }: any) => {
         `http://192.168.8.102:5000/api/posts/byUser/${id}`,
       );
       if (response.data && Array.isArray(response.data)) {
-        setPosts([examplePost, ...response.data]);
+        //@ts-ignore
+        setPosts([ ...response.data]);
       } else {
         console.warn('Invalid data format received:', response.data);
-        setPosts([examplePost]);
+        setPosts([]);
       }
-      console.log('data',response?.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
       Alert.alert('Error', 'Failed to load posts. Please check your connection.');
-      setPosts([examplePost]);
+      setPosts([]);
     }
   };
   //@ts-ignore
@@ -208,8 +195,11 @@ const PostsScreen = ({ navigation }: any) => {
                 value={updatedDescription}
                 onChangeText={setUpdatedDescription}
               />
-              <View style={tw`flex-row justify-between`}>
-                <Button title="Cancel" onPress={() => setModalVisible(false)} />
+              <View style={tw`flex-row justify-center gap-4`}>
+                <Button
+                  title="Cancel"
+                  onPress={() => setModalVisible(false)}
+                  color="#FF6B6B"/>
                 <Button title="Save" onPress={handleUpdate} />
               </View>
             </View>

@@ -4,15 +4,13 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Image,
   Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 
-const PostsScreen = ({navigation}) => {
+const PostsScreen = ({navigation}:any) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -30,7 +28,7 @@ const PostsScreen = ({navigation}) => {
       console.error('Error fetching posts:', error);
     }
   };
-
+//@ts-ignore
   const handleDelete = async postId => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -43,12 +41,12 @@ const PostsScreen = ({navigation}) => {
       console.error('Error deleting post:', error);
     }
   };
-
+//@ts-ignore
   const handleEdit = post => {
     navigation.navigate('EditPost', {post});
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({item}:any) => (
     <View
       style={tw`bg-white mb-4 p-4 rounded-lg shadow-md border border-gray-300`}>
       <Text style={tw`text-gray-500 mb-2`}>
@@ -80,6 +78,7 @@ const PostsScreen = ({navigation}) => {
       <FlatList
         data={posts}
         renderItem={renderItem}
+        //@ts-ignore
         keyExtractor={item => item._id}
       />
     </View>

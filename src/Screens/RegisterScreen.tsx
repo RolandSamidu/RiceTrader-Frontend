@@ -7,6 +7,7 @@ import {
   ImageBackground,
   StyleSheet,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import tw from 'twrnc';
@@ -44,7 +45,7 @@ const RegisterScreen = () => {
 
     try {
       const response = await fetch(
-        'http://192.168.1.10:5000/api/auth/register',
+        'http://192.168.8.102:5000/api/auth/register',
         {
           method: 'POST',
           headers: {
@@ -71,7 +72,7 @@ const RegisterScreen = () => {
     <ImageBackground
       source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
       style={styles.backgroundImage}>
-      <View style={tw`flex-1 p-4`}>
+      <ScrollView style={tw`flex-1 p-4`}>
         <Text style={tw`text-2xl font-bold mb-1 text-center`}>
           Welcome to the registration!
         </Text>
@@ -82,18 +83,21 @@ const RegisterScreen = () => {
         <TextInput
           style={tw`bg-slate-300 p-2 rounded mb-4`}
           placeholder="First Name"
+          placeholderTextColor="#544a4a"
           value={firstName}
           onChangeText={setFirstName}
         />
         <TextInput
           style={tw`bg-slate-300 p-2 rounded mb-4`}
           placeholder="Last Name"
+          placeholderTextColor="#544a4a"
           value={lastName}
           onChangeText={setLastName}
         />
         <TextInput
           style={tw`bg-slate-300 p-2 rounded mb-4`}
           placeholder="Email"
+          placeholderTextColor="#544a4a"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -101,6 +105,7 @@ const RegisterScreen = () => {
         <TextInput
           style={tw`bg-slate-300 p-2 rounded mb-4`}
           placeholder="Password"
+          placeholderTextColor="#544a4a"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -108,6 +113,8 @@ const RegisterScreen = () => {
 
         <View style={tw`bg-slate-300 rounded mb-4`}>
           <Picker
+          style={tw`text-slate-600`}
+                    dropdownIconColor="black"
             selectedValue={profileType}
             onValueChange={itemValue => setProfileType(itemValue)}>
             <Picker.Item label="Farmer" value="Farmer" />
@@ -129,7 +136,7 @@ const RegisterScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };

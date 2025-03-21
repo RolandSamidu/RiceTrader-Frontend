@@ -1,100 +1,100 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  ImageBackground,
+  Image,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
-// import IntermideatorCreatePost from './IntermideatorCreatePost';
+import axios from 'axios';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const IntermideatorCreatePost = ({navigation}) => {
-  const [breed, setBreed] = useState('');
-  const [expectedPrice, setExpectedPrice] = useState('');
-  const [kilogram, setKilogram] = useState('');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+const PostsScreen = ({ navigation }: any) => {
+  const [posts, setPosts] = useState([]);
 
-  const handleSubmit = async () => {
-    const token = await AsyncStorage.getItem('token');
-    if (!token) {
-      Alert.alert('Error', 'No authorization token found. Please log in.');
-      return;
-    }
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-    const postData = {
-      breed,
-      expectedPrice: Number(expectedPrice),
-      kilogram: Number(kilogram),
-      location,
-      description,
-    };
-
+  const fetchPosts = async () => {
     try {
-      const response = await fetch(
-        'http://192.168.1.10:5000/api/posts/create',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-          body: JSON.stringify(postData),
-        },
+      const id = await AsyncStorage.getItem('id');
+      if (!id) {
+        console.warn('No user ID found in AsyncStorage');
+        return;
+      }
+      const response = await axios.get(
+        'http://192.168.8.102:5000/api/posts//byRole/Rice Producer',
       );
-
-      const result = await response.json();
-      if (response.ok) {
-        Alert.alert('Success', 'Post created successfully!');
-        navigation.goBack();
+      if (response.data && Array.isArray(response.data)) {
+        //@ts-ignore
+        setPosts([ ...response.data]);
       } else {
-        Alert.alert('Error', result.message || 'Failed to create post');
+        console.warn('Invalid data format received:', response.data);
+        setPosts([]);
       }
     } catch (error) {
-      console.error('Error:', error);
-      Alert.alert('Error', 'Something went wrong!');
+      console.error('Error fetching posts:', error);
+      Alert.alert('Error', 'Failed to load posts. Please check your connection.');
+      setPosts([]);
     }
   };
 
+  const renderItem = ({item}:any) => (
+     <View style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
+
+      <View style={tw`flex-row`}>
+        {item.imageUri ? (
+          <Image
+            source={{ uri: item.imageUri }}
+            style={tw`w-20 h-20 rounded-lg mr-4`}
+          />
+        ) : (
+          <Image
+            source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
+            style={tw`w-20 h-20 rounded-lg mr-4`}
+          />
+        )}
+        <View style={tw`flex-1`}>
+          <Text><Text style={tw`font-semibold`}>Breed - </Text>{item.breed}</Text>
+          <Text><Text style={tw`font-semibold`}>Kg - </Text>{item.kilogram}</Text>
+          <Text><Text style={tw`font-semibold`}>Expect price - </Text>{item.expectedPrice}/kg</Text>
+          <Text><Text style={tw`font-semibold`}>Description - </Text>{item.description}</Text>
+        </View>
+      </View>
+      <View style={tw`flex-row justify-between items-center mt-2`}>
+        <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
+      </View>
+   </View>
+  );
+
   return (
-    <View style={tw`flex-1 p-4 bg-white`}>
-      <Text style={tw`text-xl font-bold mb-4`}>Create a Post</Text>
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Breed"
-        value={breed}
-        onChangeText={setBreed}
-      />
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Expected Price"
-        value={expectedPrice}
-        onChangeText={setExpectedPrice}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Kilogram"
-        value={kilogram}
-        onChangeText={setKilogram}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={tw`border p-2 mb-2`}
-        placeholder="Location"
-        value={location}
-        onChangeText={setLocation}
-      />
-      <TextInput
-        style={tw`border p-2 mb-4`}
-        placeholder="Description"
-        value={description}
-        onChangeText={setDescription}
-        multiline
-      />
-      <TouchableOpacity
-        style={tw`bg-blue-500 p-3 rounded`}
-        onPress={handleSubmit}>
-        <Text style={tw`text-white text-center`}>Submit</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground
+    source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
+    style={tw`flex-1`}
+  >
+      <View style={tw`flex-1`}>
+        <View style={tw`p-4 bg-black bg-opacity-60`}>
+          <Text style={tw`text-white text-2xl font-bold`}>Intermediate Posts</Text>
+        </View >
+        <FlatList
+          data={posts}
+          renderItem={renderItem}
+          //@ts-ignore
+          keyExtractor={item => item._id}
+        />
+        <TouchableOpacity
+          style={tw`absolute bottom-6 right-6 bg-gray-800 w-14 h-14 rounded-full justify-center items-center shadow-lg`}
+          onPress={() => navigation.navigate('CreatePost')}
+        >
+          <Ionicons name="add" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
-
-export default IntermideatorCreatePost;
+export default PostsScreen;
