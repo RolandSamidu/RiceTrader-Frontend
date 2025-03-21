@@ -44,12 +44,25 @@ const PostsScreen = ({ navigation }: any) => {
   const fetchPosts = async () => {
     try {
       const id = await AsyncStorage.getItem('id');
+      console.log('id',id)
+      if (!id) {
+        console.warn('No user ID found in AsyncStorage');
+        return;
+      }
       const response = await axios.get(
-        `http://192.168.8.102:5000/api/posts/byuser/${id}`,
+        `http://192.168.8.102:5000/api/posts/byUser/${id}`,
       );
-      setPosts(response.data);
+      if (response.data && Array.isArray(response.data)) {
+        setPosts([examplePost, ...response.data]);
+      } else {
+        console.warn('Invalid data format received:', response.data);
+        setPosts([examplePost]);
+      }
+      console.log('data',response?.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
+      Alert.alert('Error', 'Failed to load posts. Please check your connection.');
+      setPosts([examplePost]);
     }
   };
   //@ts-ignore
@@ -86,10 +99,9 @@ const PostsScreen = ({ navigation }: any) => {
         description: updatedDescription,
       };
 
-      // Send the updated post to the backend
       await axios.put(
           //@ts-ignore
-        `http://192.168.1.10:5000/api/posts/update/${selectedPost._id}`,
+        `http://192.168.8.102:5000/api/posts/update/${selectedPost._id}`,
         updatedPost,
         {
           headers: {Authorization: `${token}`},

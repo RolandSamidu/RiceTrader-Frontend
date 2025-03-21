@@ -1,72 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, ImageBackground } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomTabNavigator from '../Components/BottomTabNavigator';
+import axios from 'axios';
 
 const IntermideatorPosts = ({ navigation }: any) => {
+  const [posts, setPosts] = useState([]);
 
-    const examplePost = {
-      id: 'example-1',
-      date: '16 Mar 2025',
-      time: '10:30 AM',
-      breadType: 'Basmati',
-      kg: '500',
-      expectedPrice: '60',
-      description: 'High quality basmati rice from organic farming. Ready for delivery next week.',
-      bidCount: 6,
-      imageUri: null,
-    };
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-  const [posts, setPosts] = useState([examplePost]);
-  // const navigation = useNavigation();
+  const fetchPosts = async () => {
+    try {
+      const role = await AsyncStorage.getItem('role');
+      console.log('role',role);
+      if (!role) {
+        console.warn('No user role found in AsyncStorage');
+        return;
+      }
+      const response = await axios.get(
+        `http://192.168.8.102:5000/api/posts/byRole/${role}`,
+      );
+      if (response.data && Array.isArray(response.data)) {
+        //@ts-ignore
+        setPosts([ ...response.data]);
+      } else {
+        console.warn('Invalid data format received:', response.data);
+        setPosts([]);
+      }
+      console.log('data',response?.data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      Alert.alert('Error', 'Failed to load posts. Please check your connection.');
+      setPosts([]);
+    }
+  };
 
-  // Load posts from storage when screen is focused
-  useFocusEffect(
-    React.useCallback(() => {
-      const loadPosts = async () => {
-        try {
-          const storedPosts = await AsyncStorage.getItem('farm_posts');
-          if (storedPosts) {
-            setPosts(JSON.parse(storedPosts));
-          }
-        } catch (error) {
-          console.error('Error loading posts:', error);
-        }
-      };
-
-      loadPosts();
-    }, [])
-  );
-
-  // Delete post
-  // const handleDelete = async (id:any) => {
-  //   try {
-  //       //@ts-ignore
-  //     const updatedPosts = posts.filter(post => post.id !== id);
-  //     await AsyncStorage.setItem('farm_posts', JSON.stringify(updatedPosts));
-  //     setPosts(updatedPosts);
-  //   } catch (error) {
-  //     console.error('Error deleting post:', error);
-  //   }
-  // };
-
-  // Navigate to edit screen
-  // const handleEdit = (post:any) => {
-  //   //@ts-ignore
-  //   navigation.navigate('EditPost', { post });
-  // };
-
-  // Navigate to create post screen
-  // const navigateToCreatePost = () => {
-  //       //@ts-ignore
-  //   navigation.navigate('CreatePost');
-  // };
-
-    //@ts-ignore
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }:any) => (
     <View style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
       <View style={tw`flex-row`}>
         {item.imageUri ? (
@@ -89,21 +62,6 @@ const IntermideatorPosts = ({ navigation }: any) => {
           <Text style={tw`text-gray-500 mt-1`}>BID count: {item.bidCount || 4}</Text>
         </View>
       </View>
-      {/* <View style={tw`flex-row justify-between items-center mt-2`}>
-        <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
-        <View style={tw`flex-row gap-2`}>
-          <TouchableOpacity
-            onPress={() => handleEdit(item)}
-            style={tw`bg-blue-500 px-3 py-1 rounded-lg`}>
-            <Text style={tw`text-white`}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleDelete(item._id)}
-            style={tw`bg-red-500 px-3 py-1 rounded-lg`}>
-            <Text style={tw`text-white`}>Delete</Text>
-          </TouchableOpacity>
-        </View>
-      </View> */}
     </View>
   );
 
