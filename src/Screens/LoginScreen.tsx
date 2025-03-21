@@ -55,6 +55,7 @@ const LoginScreen = () => {
       // Store token in AsyncStorage
       await AsyncStorage.setItem('token', data.token);
       await AsyncStorage.setItem('role', data.user.role);
+      await AsyncStorage.setItem('id', data.user._id);
 
       // Redirect based on role
       if (data.user.role === 'Farmer') {

@@ -21,9 +21,9 @@ const PostsScreen = ({navigation}) => {
 
   const fetchPosts = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
+      const id = await AsyncStorage.getItem('id');
       const response = await axios.get(
-        'http://192.168.1.10:5000/api/posts/byuser/67c9d4dffe39d733316b62dd',
+        `http://192.168.1.10:5000/api/posts/byuser/${id}`,
         // {
         //   headers: {Authorization: token},
         // },

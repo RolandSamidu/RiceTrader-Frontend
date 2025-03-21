@@ -103,7 +103,7 @@ const IntermideatorDashboard = () => {
               source={require('../Images/post.png')}
               style={tw`w-28 h-20 mb-4`}
             />
-            <Text style={tw`text-lg font-semibold text-gray-800`}>Biding-Farmer-Posts</Text>
+            <Text style={tw`text-lg font-semibold text-gray-800`}>Biding-Farmer</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
