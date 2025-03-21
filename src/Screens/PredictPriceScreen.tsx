@@ -21,7 +21,7 @@ const PredictPriceScreen = () => {
     }
 
     try {
-      const response = await fetch('http://192.168.8.178:5000/predict', {
+      const response = await fetch('http://192.168.1.10:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

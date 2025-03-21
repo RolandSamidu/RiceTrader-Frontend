@@ -21,6 +21,8 @@ import CreatePostScreen from '../Screens/CreatePostScreen';
 import IntermideatorPosts from '../Screens/IntermideatorPosts';
 import RiceMakerPosts from '../Screens/RiceMakerPosts';
 import IntermideatorCreatePost from '../Screens/IntermideatorCreatePost';
+import IntermideatorCreate from '../Screens/IntermideatorCreatePost';
+import FarmerPostsPage from '../Screens/BidingFarmer';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -46,10 +48,7 @@ const AppRouter = () => {
                 name="RiceMakerDashboard"
                 component={RicemakerDashboard}
               />
-              <Stack.Screen
-                name="Price"
-                component={PredictPriceScreen}
-              />
+              <Stack.Screen name="Price" component={PredictPriceScreen} />
 
               <Stack.Screen
                 name="Notification"
@@ -59,9 +58,23 @@ const AppRouter = () => {
               <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="Posts" component={PostsScreen} />
               <Stack.Screen name="CreatePost" component={CreatePostScreen} />
-              <Stack.Screen name="IntermideatorCreatePost" component={IntermideatorCreatePost} />
-              <Stack.Screen name="IntermideatorPosts" component={IntermideatorPosts} />
+              <Stack.Screen
+                name="IntermideatorCreatePost"
+                component={IntermideatorCreate}
+              />
+              <Stack.Screen
+                name="IntermideatorPosts"
+                component={IntermideatorCreatePost}
+              />
               <Stack.Screen name="RiceMakerPosts" component={RiceMakerPosts} />
+              <Stack.Screen
+                name="FarmerPostsPage"
+                component={FarmerPostsPage}
+              />
+              <Stack.Screen
+                name="FarmerCreatePost"
+                component={CreatePostScreen}
+              />
               {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
             </Stack.Navigator>
           </NavigationContainer>

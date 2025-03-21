@@ -1,138 +1,165 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, ImageBackground } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Alert,
+  Button,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
 
-const PostsScreen = ({ navigation }: any) => {
+const PostsScreen = ({navigation}) => {
+  const [posts, setPosts] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [updatedBreed, setUpdatedBreed] = useState('');
+  const [updatedPrice, setUpdatedPrice] = useState('');
+  const [updatedDescription, setUpdatedDescription] = useState('');
 
-    const examplePost = {
-      id: 'example-1',
-      date: '16 Mar 2025',
-      time: '10:30 AM',
-      breadType: 'Basmati',
-      kg: '500',
-      expectedPrice: '60',
-      description: 'High quality basmati rice from organic farming. Ready for delivery next week.',
-      bidCount: 6,
-      imageUri: null,
-    };
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-  const [posts, setPosts] = useState([examplePost]);
-  // const navigation = useNavigation();
+  const fetchPosts = async () => {
+    try {
+      const id = await AsyncStorage.getItem('id');
+      const response = await axios.get(
+        `http://192.168.1.10:5000/api/posts/byuser/${id}`,
+      );
+      setPosts(response.data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
 
-  // Load posts from storage when screen is focused
-  useFocusEffect(
-    React.useCallback(() => {
-      const loadPosts = async () => {
-        try {
-          const storedPosts = await AsyncStorage.getItem('farm_posts');
-          if (storedPosts) {
-            setPosts(JSON.parse(storedPosts));
-          }
-        } catch (error) {
-          console.error('Error loading posts:', error);
-        }
+  const handleDelete = async postId => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      await axios.delete(
+        `http://192.168.1.10:5000/api/posts/delete/${postId}`,
+        {
+          headers: {Authorization: token},
+        },
+      );
+      Alert.alert('Success', 'Post deleted successfully');
+      fetchPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
+
+  const handleEdit = post => {
+    setSelectedPost(post);
+    setUpdatedBreed(post.breed);
+    setUpdatedPrice(post.expectedPrice.toString());
+    setUpdatedDescription(post.description);
+    setModalVisible(true); // Open the modal
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const updatedPost = {
+        breed: updatedBreed,
+        expectedPrice: parseFloat(updatedPrice),
+        description: updatedDescription,
       };
 
-      loadPosts();
-    }, [])
-  );
+      // Send the updated post to the backend
+      await axios.put(
+        `http://192.168.1.10:5000/api/posts/update/${selectedPost._id}`,
+        updatedPost,
+        {
+          headers: {Authorization: `${token}`},
+        },
+      );
 
-  // Delete post
-  // const handleDelete = async (id:any) => {
-  //   try {
-  //       //@ts-ignore
-  //     const updatedPosts = posts.filter(post => post.id !== id);
-  //     await AsyncStorage.setItem('farm_posts', JSON.stringify(updatedPosts));
-  //     setPosts(updatedPosts);
-  //   } catch (error) {
-  //     console.error('Error deleting post:', error);
-  //   }
-  // };
+      Alert.alert('Success', 'Post updated successfully');
+      setModalVisible(false); // Close the modal
+      fetchPosts();
+    } catch (error) {
+      console.error('Error updating post:', error);
+      Alert.alert('Error', 'Failed to update post');
+    }
+  };
 
-  // Navigate to edit screen
-  // const handleEdit = (post:any) => {
-  //   //@ts-ignore
-  //   navigation.navigate('EditPost', { post });
-  // };
-
-  // Navigate to create post screen
-  // const navigateToCreatePost = () => {
-  //       //@ts-ignore
-  //   navigation.navigate('CreatePost');
-  // };
-
-    //@ts-ignore
-  const renderItem = ({ item }) => (
-    <View style={tw`bg-white mb-4 p-4 rounded-lg shadow-sm`}>
-      <View style={tw`flex-row justify-between items-center mb-2`}>
-        <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
-        <View style={tw`flex-row`}>
-          <TouchableOpacity
-            style={tw`mr-2`}
-            // onPress={() => handleEdit(item)}
-          >
-            <Text style={tw`text-blue-500`}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          // onPress={() => handleDelete(item.id)}
-          >
-            <Text style={tw`text-red-500`}>DELETE</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={tw`flex-row`}>
-        {item.imageUri ? (
-          <Image
-            source={{ uri: item.imageUri }}
-            style={tw`w-20 h-20 rounded-lg mr-4`}
-          />
-        ) : (
-          // Use local image from Images folder for example post
-          <Image
-            source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
-            style={tw`w-20 h-20 rounded-lg mr-4`}
-          />
-        )}
-        <View style={tw`flex-1`}>
-          <Text style={tw`font-semibold`}>Breed - {item.breadType}</Text>
-          <Text>Kg - {item.kg}</Text>
-          <Text>expect price - {item.expectedPrice}/kg</Text>
-          <Text>description - {item.description}</Text>
-          <Text style={tw`text-gray-500 mt-1`}>BID count: {item.bidCount || 4}</Text>
-        </View>
+  const renderItem = ({item}) => (
+    <View
+      style={tw`bg-white mb-4 p-4 rounded-lg shadow-md border border-gray-300`}>
+      <Text style={tw`text-gray-500 mb-2`}>
+        {item.breed} - {item.location}
+      </Text>
+      <Text style={tw`text-lg font-semibold`}>
+        Price: {item.expectedPrice}/kg
+      </Text>
+      <Text>Kilogram: {item.kilogram}</Text>
+      <Text style={tw`text-gray-600`}>{item.description}</Text>
+      <View style={tw`flex-row justify-between mt-2`}>
+        <TouchableOpacity
+          onPress={() => handleEdit(item)}
+          style={tw`bg-blue-500 px-3 py-1 rounded-lg`}>
+          <Text style={tw`text-white`}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleDelete(item._id)}
+          style={tw`bg-red-500 px-3 py-1 rounded-lg`}>
+          <Text style={tw`text-white`}>Delete</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 
   return (
-    <ImageBackground
-      source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
-      style={tw`flex-1`}
-    >
-    <View style={tw`flex-1`}>
-      <View style={tw`p-4 bg-black bg-opacity-60`}>
-        <Text style={tw`text-white text-2xl font-bold`}>My Posts</Text>
-      </View>
-
+    <View style={tw`flex-1 p-4 bg-gray-100`}>
+      <Text style={tw`text-2xl font-bold mb-4`}>My Posts</Text>
       <FlatList
         data={posts}
         renderItem={renderItem}
-        keyExtractor={(item: { id: any; }) => item.id}
-        contentContainerStyle={tw`p-4`}
+        keyExtractor={item => item._id}
       />
 
-      <TouchableOpacity
-        style={tw`absolute bottom-6 right-6 bg-gray-800 w-14 h-14 rounded-full justify-center items-center shadow-lg`}
-        onPress={() => navigation.navigate('CreatePost')}
-      >
-        <Ionicons name="add" size={30} color="white" />
-      </TouchableOpacity>
+      {/* Modal for editing post */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}>
+        <View
+          style={tw`flex-1 justify-center items-center bg-black opacity-50`}>
+          <View style={tw`bg-white p-6 rounded-lg shadow-md`}>
+            <Text style={tw`text-xl font-bold mb-4`}>Edit Post</Text>
+            <TextInput
+              style={tw`border border-gray-300 p-2 mb-4 rounded`}
+              placeholder="Breed"
+              value={updatedBreed}
+              onChangeText={setUpdatedBreed}
+            />
+            <TextInput
+              style={tw`border border-gray-300 p-2 mb-4 rounded`}
+              placeholder="Expected Price"
+              keyboardType="numeric"
+              value={updatedPrice}
+              onChangeText={setUpdatedPrice}
+            />
+            <TextInput
+              style={tw`border border-gray-300 p-2 mb-4 rounded`}
+              placeholder="Description"
+              value={updatedDescription}
+              onChangeText={setUpdatedDescription}
+            />
+            <View style={tw`flex-row justify-between`}>
+              <Button title="Cancel" onPress={() => setModalVisible(false)} />
+              <Button title="Save" onPress={handleUpdate} />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
-    </ImageBackground>
   );
 };
 
