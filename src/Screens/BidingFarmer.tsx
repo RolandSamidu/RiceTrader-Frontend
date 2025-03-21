@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, FlatList, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  FlatList,
+  Alert,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
 import axios from 'axios';
 import {Card} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +16,7 @@ const FarmerPostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [bidAmount, setBidAmount] = useState(''); // State to store the bid amount
 
   useEffect(() => {
     // Fetch posts for Farmer role
@@ -28,6 +37,11 @@ const FarmerPostsPage = () => {
   }, []);
 
   const placeBid = async postId => {
+    if (!bidAmount || isNaN(bidAmount) || parseFloat(bidAmount) <= 0) {
+      Alert.alert('Invalid Bid', 'Please enter a valid bid amount.');
+      return;
+    }
+
     try {
       // Get the token from local storage
       const token = await AsyncStorage.getItem('token');
@@ -38,7 +52,7 @@ const FarmerPostsPage = () => {
 
       const bidData = {
         postId: postId,
-        amount: 4500,
+        amount: parseFloat(bidAmount),
       };
 
       // Place bid using the second API
@@ -49,6 +63,7 @@ const FarmerPostsPage = () => {
       });
 
       Alert.alert('Success', 'Bid placed successfully');
+      setBidAmount(''); // Clear the bid input field
     } catch (err) {
       Alert.alert('Error', 'Failed to place bid');
     }
@@ -77,6 +92,15 @@ const FarmerPostsPage = () => {
               <Text>Description: {item.description}</Text>
               <Text>Expected Price: {item.expectedPrice}</Text>
               <Text>Kilogram: {item.kilogram}</Text>
+
+              {/* User input for bid amount */}
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your bid amount"
+                keyboardType="numeric"
+                value={bidAmount}
+                onChangeText={setBidAmount} // Update the state when the user types
+              />
             </Card.Content>
             <Card.Cover source={{uri: item.image}} />
             <Card.Actions>
@@ -88,5 +112,16 @@ const FarmerPostsPage = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+  },
+});
 
 export default FarmerPostsPage;
