@@ -105,7 +105,9 @@ const PostsScreen = ({ navigation }: any) => {
   };
 
   const renderItem = ({item}:any) => (
-     <View style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
+     <TouchableOpacity 
+     onPress={() => navigation.navigate('AllBids', { post: item })}
+     style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
 
       <View style={tw`flex-row`}>
         {item.imageUri ? (
@@ -142,7 +144,7 @@ const PostsScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
       </View>
-   </View>
+   </TouchableOpacity >
   );
 
   return (

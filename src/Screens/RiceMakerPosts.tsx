@@ -28,7 +28,7 @@ const PostsScreen = ({ navigation }: any) => {
         return;
       }
       const response = await axios.get(
-        'http://192.168.8.102:5000/api/posts//byRole/Rice Producer',
+        'http://192.168.8.102:5000/api/posts//byRole/Intermediate',
       );
       if (response.data && Array.isArray(response.data)) {
         //@ts-ignore
@@ -45,8 +45,11 @@ const PostsScreen = ({ navigation }: any) => {
   };
 
   const renderItem = ({item}:any) => (
-     <View style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
-
+    <TouchableOpacity
+      style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}
+      onPress={() => {navigation.navigate('Bid', { post: item });}
+      }
+      >
       <View style={tw`flex-row`}>
         {item.imageUri ? (
           <Image
@@ -69,7 +72,7 @@ const PostsScreen = ({ navigation }: any) => {
       <View style={tw`flex-row justify-between items-center mt-2`}>
         <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
       </View>
-   </View>
+    </TouchableOpacity>
   );
 
   return (

@@ -14,10 +14,12 @@ export type RootStackParamList = {
   IntermideatorDashboard: undefined;
   RiceMakerDashboard: undefined;
   Price: undefined;
+  Bid:undefined;
   IntermideatorPosts: undefined;
   RiceMakerPosts: undefined;
   IntermideatorCreatePost: undefined;
   FarmerCreatePost: undefined;
   FarmerPostsPage: undefined;
+  AllBids: undefined;
 };
 

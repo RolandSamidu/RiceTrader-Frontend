@@ -52,45 +52,59 @@ const IntermideatorPosts = ({ navigation }: any) => {
     }
   };
   const renderItem = ({ item }: any) => (
-    <View style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
-      <View style={tw`flex-row`}>
-        {item.imageUri ? (
-          <Image
-            source={{ uri: item.imageUri }}
-            style={tw`w-20 h-20 rounded-lg mr-4`}
-          />
-        ) : (
-          // Use local image from Images folder for example post
-          <Image
-            source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
-            style={tw`w-20 h-20 rounded-lg mr-4`}
-          />
-        )}
-        <View style={tw`flex-1`}>
-          <Text><Text style={tw`font-semibold`}>Breed - </Text>{item.breed}</Text>
-          <Text><Text style={tw`font-semibold`}>Kg - </Text>{item.kilogram}</Text>
-          <Text><Text style={tw`font-semibold`}>Expect price - </Text>{item.expectedPrice}/kg</Text>
-          <Text><Text style={tw`font-semibold`}>Description - </Text>{item.description}</Text>
-        </View>
-      </View>
-      <View style={tw`flex-row justify-between items-center mt-2`}>
-        <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
-          {activeTab === 'Intermediate' &&
-            <View style={tw`flex-row gap-2`}>
-              {/* <TouchableOpacity
-                onPress={() => handleEdit(item)}
-                style={tw`bg-blue-500 px-3 py-1 rounded-lg`}>
-                <Text style={tw`text-white`}>Edit</Text>
-              </TouchableOpacity> */}
-              <TouchableOpacity
-                onPress={() => handleDelete(item._id)}
-                style={tw`bg-red-500 px-3 py-1 rounded-lg`}>
-                <Text style={tw`text-white`}>Delete</Text>
-              </TouchableOpacity>
+    <TouchableOpacity
+    style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}
+    onPress={() => {
+      // Only navigate to BidPage if we're viewing Farmer posts
+      if (activeTab === 'Farmer') {
+        navigation.navigate('Bid', { post: item });
+      } else if (activeTab === 'Intermediate') {
+        navigation.navigate('AllBids', { post: item });
+      } else {
+        // Default fallback
+        navigation.goBack();}
+    }}
+    >
+        
+          <View style={tw`flex-row`}>
+            {item.imageUri ? (
+              <Image
+                source={{ uri: item.imageUri }}
+                style={tw`w-20 h-20 rounded-lg mr-4`}
+              />
+            ) : (
+              // Use local image from Images folder for example post
+              <Image
+                source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
+                style={tw`w-20 h-20 rounded-lg mr-4`}
+              />
+            )}
+            <View style={tw`flex-1`}>
+              <Text><Text style={tw`font-semibold`}>Breed - </Text>{item.breed}</Text>
+              <Text><Text style={tw`font-semibold`}>Kg - </Text>{item.kilogram}</Text>
+              <Text><Text style={tw`font-semibold`}>Expect price - </Text>{item.expectedPrice}/kg</Text>
+              <Text><Text style={tw`font-semibold`}>Description - </Text>{item.description}</Text>
             </View>
-          }
-      </View>
-    </View>
+          </View>
+          <View style={tw`flex-row justify-between items-center mt-2`}>
+            <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
+              {activeTab === 'Intermediate' &&
+                <View style={tw`flex-row gap-2`}>
+                  {/* <TouchableOpacity
+                    onPress={() => handleEdit(item)}
+                    style={tw`bg-blue-500 px-3 py-1 rounded-lg`}>
+                    <Text style={tw`text-white`}>Edit</Text>
+                  </TouchableOpacity> */}
+                  <TouchableOpacity
+                    onPress={() => handleDelete(item._id)}
+                    style={tw`bg-red-500 px-3 py-1 rounded-lg`}>
+                    <Text style={tw`text-white`}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              }
+          </View>
+        
+    </TouchableOpacity>
   );
 
   // Tab switching component

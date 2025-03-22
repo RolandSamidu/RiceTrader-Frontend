@@ -45,7 +45,7 @@ const navigation = useNavigation<LoginScreenNavigationProp>();
     onPress={() => navigation.navigate('Profile')}>
       <View style={tw`flex justify-center items-center`}>
        <Ionicons name="person" size={30} />
-       <Text>Account</Text>
+       <Text>Profile</Text>
      </View>
    </TouchableOpacity>
  </View>

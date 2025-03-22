@@ -7,11 +7,9 @@ import RegisterScreen from '../Screens/RegisterScreen';
 import LoginScreen from '../Screens/LoginScreen';
 import { RootStackParamList } from '../types/naviagations';
 import InfoScreen from '../Screens/InfoScreen';
-
 import FarmerDashboard from '../Screens/FarmerDashboard';
 import IntermideatorDashboard from '../Screens/IntermideatorDashboard';
 import RicemakerDashboard from '../Screens/RicemakerDashboard';
-
 import NotificationScreen from '../Screens/NotificationScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
@@ -20,9 +18,10 @@ import PredictPriceScreen from '../Screens/PredictPriceScreen';
 import CreatePostScreen from '../Screens/CreatePostScreen';
 import IntermideatorPosts from '../Screens/IntermideatorPosts';
 import RiceMakerPosts from '../Screens/RiceMakerPosts';
-// import IntermideatorCreatePost from '../Screens/IntermideatorCreatePost';
 import IntermideatorCreate from '../Screens/IntermideatorCreatePost';
 import FarmerPostsPage from '../Screens/BidingFarmer';
+import BidScreen from '../Screens/BidScreen';
+import AllBidScreen from '../Screens/AllBidScreen';
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -76,6 +75,12 @@ const AppRouter = () => {
                 component={CreatePostScreen}
               />
               {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
+              <Stack.Screen name="Bid" component={BidScreen} />
+              <Stack.Screen
+                name="AllBids"
+                component={AllBidScreen}
+                options={{ headerShown: false }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         );
