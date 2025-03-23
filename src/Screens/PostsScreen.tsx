@@ -37,7 +37,7 @@ const PostsScreen = ({ navigation }: any) => {
         return;
       }
       const response = await axios.get(
-        `http://192.168.8.102:5000/api/posts/byUser/${id}`,
+        `http://192.168.8.178:5000/api/posts/byUser/${id}`,
       );
       if (response.data && Array.isArray(response.data)) {
         //@ts-ignore
@@ -57,7 +57,7 @@ const PostsScreen = ({ navigation }: any) => {
     try {
       const token = await AsyncStorage.getItem('token');
       await axios.delete(
-        `http://192.168.8.102:5000/api/posts/delete/${postId}`,
+        `http://192.168.8.178:5000/api/posts/delete/${postId}`,
         {
           headers: {Authorization: token},
         },
@@ -87,8 +87,8 @@ const PostsScreen = ({ navigation }: any) => {
       };
 
       await axios.put(
-          //@ts-ignore
-        `http://192.168.8.102:5000/api/posts/update/${selectedPost._id}`,
+        //@ts-ignore
+        `http://192.168.8.178:5000/api/posts/update/${selectedPost._id}`,
         updatedPost,
         {
           headers: {Authorization: `${token}`},

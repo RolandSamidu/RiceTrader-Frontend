@@ -28,7 +28,7 @@ const PostsScreen = ({ navigation }: any) => {
         return;
       }
       const response = await axios.get(
-        'http://192.168.8.102:5000/api/posts//byRole/Intermediate',
+        'http://192.168.8.178:5000/api/posts//byRole/Intermediate',
       );
       if (response.data && Array.isArray(response.data)) {
         //@ts-ignore

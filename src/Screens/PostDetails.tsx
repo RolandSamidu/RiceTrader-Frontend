@@ -32,9 +32,12 @@ const PostsScreen = ({navigation}:any) => {
   const handleDelete = async postId => {
     try {
       const token = await AsyncStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/posts/delete/${postId}`, {
-        headers: {Authorization: token},
-      });
+      await axios.delete(
+        `http://192.168.8.178:5000/api/posts/delete/${postId}`,
+        {
+          headers: {Authorization: token},
+        },
+      );
       Alert.alert('Success', 'Post deleted successfully');
       fetchPosts();
     } catch (error) {
