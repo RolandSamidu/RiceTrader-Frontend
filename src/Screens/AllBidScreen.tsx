@@ -121,65 +121,136 @@ const AllBidScreen = ({ route, navigation }:any) => {
   //     Alert.alert('Error', `Failed to ${actionType} bid. Please try again.`);
   //   }
   // };
-const confirmBidAction = async () => {
-  if (!selectedBid) {
-    Alert.alert('Error', 'No bid selected.');
-    return;
-  }
+// const confirmBidAction = async () => {
+//   if (!selectedBid) {
+//     Alert.alert('Error', 'No bid selected.');
+//     return;
+//   }
 
-  try {
-    setConfirmModalVisible(false);
-    const token = await AsyncStorage.getItem('token');
+//   try {
+//     setConfirmModalVisible(false);
+//     const token = await AsyncStorage.getItem('token');
 
-    const endpoint =
-      actionType === 'accept'
-        ? `http://192.168.8.178:5000/api/bids/accept/${selectedBid._id}`
-        : `http://192.168.8.178:5000/api/bids/reject/${selectedBid._id}`;
+//     const endpoint =
+//       actionType === 'accept'
+//         ? `http://192.168.8.178:5000/api/bids/accept/${selectedBid._id}`
+//         : `http://192.168.8.178:5000/api/bids/reject/${selectedBid._id}`;
 
-    const response = await axios.put(
-      endpoint,
-      {},
-      {
-        headers: {Authorization: ` ${token}`},
-      },
-    );
+//     const response = await axios.put(
+//       endpoint,
+//       {},
+//       {
+//         headers: {Authorization: ` ${token}`},
+//       },
+//     );
 
-    // Show notification if bid is accepted
-    if (actionType === 'accept' && selectedBid.bidder) {
-      setNotification({
-        bidder: `${selectedBid.bidder.firstName} ${selectedBid.bidder.lastName}`,
-        amount: selectedBid.amount,
-        message: 'Credit LKR 3000 from total amount',
-        type: 'Credit',
-      });
-      setNotificationVisible(true);
+//     // Show notification if bid is accepted
+//     if (actionType === 'accept' && selectedBid.bidder) {
+//       setNotification({
+//         bidder: `${selectedBid.bidder.firstName} ${selectedBid.bidder.lastName}`,
+//         amount: selectedBid.amount,
+//         message: 'Credit LKR 3000 from total amount',
+//         type: 'Credit',
+//       });
+//       setNotificationVisible(true);
 
-      // Update other bids to rejected status if one is accepted
-      const otherBids = bids.filter(bid => bid._id !== selectedBid._id);
-      if (otherBids.length > 0) {
-        await Promise.all(
-          otherBids.map(bid =>
-            axios.put(
-              `http://192.168.8.178:5000/api/bids/reject/${bid._id}`,
-              {},
-              {headers: {Authorization: `${token}`}},
-            ),
-          ),
-        );
-      }
+//       // Update other bids to rejected status if one is accepted
+//       const otherBids = bids.filter(bid => bid._id !== selectedBid._id);
+//       if (otherBids.length > 0) {
+//         await Promise.all(
+//           otherBids.map(bid =>
+//             axios.put(
+//               `http://192.168.8.178:5000/api/bids/reject/${bid._id}`,
+//               {},
+//               {headers: {Authorization: `${token}`}},
+//             ),
+//           ),
+//         );
+//       }
+//     }
+
+//     const message =
+//       actionType === 'accept'
+//         ? 'Bid accepted successfully.'
+//         : 'Bid rejected successfully.';
+//     Alert.alert('Success', message);
+//     fetchBids();
+//   } catch (error) {
+//     console.error(`Error ${actionType}ing bid:`, error);
+//     Alert.alert('Error', `Failed to ${actionType} bid. Please try again.`);
+//   }
+  // };
+  
+  const confirmBidAction = async () => {
+    if (!selectedBid) {
+      Alert.alert('Error', 'No bid selected.');
+      return;
     }
 
-    const message =
-      actionType === 'accept'
-        ? 'Bid accepted successfully.'
-        : 'Bid rejected successfully.';
-    Alert.alert('Success', message);
-    fetchBids();
-  } catch (error) {
-    console.error(`Error ${actionType}ing bid:`, error);
-    Alert.alert('Error', `Failed to ${actionType} bid. Please try again.`);
-  }
-};
+    try {
+      setConfirmModalVisible(false);
+      const token = await AsyncStorage.getItem('token');
+
+      const endpoint =
+        actionType === 'accept'
+          ? `http://192.168.8.178:5000/api/bids/accept/${selectedBid._id}`
+          : `http://192.168.8.178:5000/api/bids/reject/${selectedBid._id}`;
+
+      const response = await axios.put(
+        endpoint,
+        {},
+        {
+          headers: {Authorization: ` ${token}`},
+        },
+      );
+
+      // Show notification if bid is accepted
+      if (actionType === 'accept' && selectedBid.bidder) {
+        const notificationData = {
+          bidder: `${selectedBid.bidder.firstName} ${selectedBid.bidder.lastName}`,
+          amount: selectedBid.amount,
+          message: 'Credit LKR 3000 from total amount',
+          type: 'Credit',
+        };
+
+        // Save notification to AsyncStorage (for persistence)
+        await AsyncStorage.setItem(
+          'notification',
+          JSON.stringify(notificationData),
+        );
+
+        // Navigate to Notification screen and pass notification data
+        navigation.navigate('Notification', {
+          notification: notificationData,
+        });
+
+        // Reject other bids
+        const otherBids = bids.filter(bid => bid._id !== selectedBid._id);
+        if (otherBids.length > 0) {
+          await Promise.all(
+            otherBids.map(bid =>
+              axios.put(
+                `http://192.168.8.178:5000/api/bids/reject/${bid._id}`,
+                {},
+                {headers: {Authorization: `${token}`}},
+              ),
+            ),
+          );
+        }
+      }
+
+      const message =
+        actionType === 'accept'
+          ? 'Bid accepted successfully.'
+          : 'Bid rejected successfully.';
+      Alert.alert('Success', message);
+      fetchBids();
+    } catch (error) {
+      console.error(`Error ${actionType}ing bid:`, error);
+      Alert.alert('Error', `Failed to ${actionType} bid. Please try again.`);
+    }
+  };
+
 
   const getBidStatusColor = (status:any) => {
     switch(status) {
