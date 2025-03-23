@@ -21,14 +21,14 @@ const BidScreen = ({ route, navigation }:any) => {
       const token = await AsyncStorage.getItem('token');
       const userRole = await AsyncStorage.getItem('role');
       const response = await axios.post(
-        'http://192.168.8.102:5000/api/bids/place',
+        'http://192.168.8.178:5000/api/bids/place',
         {
           postId: post._id,
           amount: parseFloat(bidAmount),
         },
         {
-          headers: { Authorization: token },
-        }
+          headers: {Authorization: token},
+        },
       );
       console.log(response);
       Alert.alert('Success', 'Bid placed successfully!');

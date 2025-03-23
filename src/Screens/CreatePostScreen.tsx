@@ -28,7 +28,7 @@ const CreatePostScreen = ({navigation}:any) => {
 
     try {
       const response = await fetch(
-        'http://192.168.8.102:5000/api/posts/create',
+        'http://192.168.8.178:5000/api/posts/create',
         {
           method: 'POST',
           headers: {

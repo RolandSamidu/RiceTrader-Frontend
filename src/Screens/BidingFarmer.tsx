@@ -23,7 +23,7 @@ const FarmerPostsPage = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          'http://192.168.1.10:5000/api/posts/byrole/Farmer',
+          'http://192.168.8.178:5000/api/posts/byrole/Farmer',
         );
         setPosts(response.data);
       } catch (err) {
@@ -56,7 +56,7 @@ const FarmerPostsPage = () => {
       };
 
       // Place bid using the second API
-      await axios.post('http://192.168.1.10:5000/api/bids/place', bidData, {
+      await axios.post('http://192.168.8.178:5000/api/bids/place', bidData, {
         headers: {
           Authorization: `${token}`,
         },
