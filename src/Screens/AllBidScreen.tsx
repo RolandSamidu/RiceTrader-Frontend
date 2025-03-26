@@ -282,9 +282,9 @@ const AllBidScreen = ({ route, navigation }:any) => {
           </View>
         </View>
         <View style={tw`mb-3 border-b border-gray-200 pb-3`}>
-          <Text style={tw`text-2xl font-bold text-blue-600`}>₹{item.amount}/kg</Text>
+          <Text style={tw`text-2xl font-bold text-blue-600`}>Rs.{item.amount}/kg</Text>
           <Text style={tw`text-gray-500`}>
-            Total value: ₹{(item.amount * post.kilogram).toFixed(2)}
+            Total value: Rs.{(item.amount * post.kilogram).toFixed(2)}
           </Text>
           <Text style={tw`text-gray-500 text-xs mt-1`}>
             Bid placed on {new Date(item.createdAt).toLocaleDateString()} at {new Date(item.createdAt).toLocaleTimeString()}
@@ -331,9 +331,9 @@ const AllBidScreen = ({ route, navigation }:any) => {
           <View style={tw`bg-white p-4 rounded-xl mb-4 shadow`}>
             <Text style={tw`text-lg font-bold mb-2`}>Post Details</Text>
             <View style={tw`flex-row`}>
-              {post.imageUri ? (
+              {post.image ? (
                 <Image
-                  source={{ uri: post.imageUri }}
+                source={{ uri: `http://192.168.8.102:5000${post.image}` }}
                   style={tw`w-20 h-20 rounded-lg mr-4`}
                 />
               ) : (

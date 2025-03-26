@@ -44,7 +44,7 @@ const RicemakerDashboard = () => {
 
         setUserName(role || 'User');
         // Fetch user profile data
-        const response = await axios.get('http://192.168.8.102:5000/api/profile/profile', {
+        const response = await axios.get('http://192.168.8.102:5000/api/profile', {
           headers: { Authorization: token },
         });
 

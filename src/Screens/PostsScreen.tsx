@@ -10,20 +10,22 @@ import {
   Button,
   ImageBackground,
   Image,
+  Linking,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const PostsScreen = ({ navigation }: any) => {
-
   const [posts, setPosts] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [updatedBreed, setUpdatedBreed] = useState('');
   const [updatedPrice, setUpdatedPrice] = useState('');
   const [updatedDescription, setUpdatedDescription] = useState('');
+  const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPosts();
@@ -40,6 +42,7 @@ const PostsScreen = ({ navigation }: any) => {
         `http://192.168.8.102:5000/api/posts/byUser/${id}`,
       );
       if (response.data && Array.isArray(response.data)) {
+
         //@ts-ignore
         setPosts([ ...response.data]);
       } else {
@@ -52,6 +55,28 @@ const PostsScreen = ({ navigation }: any) => {
       setPosts([]);
     }
   };
+
+  const selectImage = () => {
+    launchImageLibrary({
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.7,
+    }, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+        Alert.alert('Error', 'Failed to select image');
+      } else {
+        const uri = response.assets?.[0]?.uri;
+        if (uri) {
+          setSelectedImageUri(uri);
+        }
+      }
+    });
+  };
+
   //@ts-ignore
   const handleDelete = async postId => {
     try {
@@ -68,30 +93,48 @@ const PostsScreen = ({ navigation }: any) => {
       console.error('Error deleting post:', error);
     }
   };
+
   //@ts-ignore
   const handleEdit = post => {
     setSelectedPost(post);
     setUpdatedBreed(post.breed);
     setUpdatedPrice(post.expectedPrice.toString());
     setUpdatedDescription(post.description);
+    setSelectedImageUri(post.image || null);
     setModalVisible(true); // Open the modal
   };
 
   const handleUpdate = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const updatedPost = {
-        breed: updatedBreed,
-        expectedPrice: parseFloat(updatedPrice),
-        description: updatedDescription,
-      };
+      // Create FormData for multipart/form-data upload
+      const formData = new FormData();
+      formData.append('breed', updatedBreed);
+      formData.append('expectedPrice', updatedPrice);
+      formData.append('description', updatedDescription);
+
+         // Only append image if a NEW image is selected
+         //@ts-ignore
+    if (selectedImageUri && selectedImageUri !== selectedPost.image) {
+      // Use file type detection more robustly
+      const uriParts = selectedImageUri.split('.');
+      const fileType = uriParts[uriParts.length - 1];
+      formData.append('image', {
+        uri: selectedImageUri,
+        type: `image/${fileType}`,
+        name: `post_image.${fileType}`,
+      } as any);
+    }
 
       await axios.put(
         //@ts-ignore
         `http://192.168.8.102:5000/api/posts/update/${selectedPost._id}`,
-        updatedPost,
+        formData,
         {
-          headers: {Authorization: `${token}`},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `${token}`,
+          },
         },
       );
 
@@ -105,14 +148,14 @@ const PostsScreen = ({ navigation }: any) => {
   };
 
   const renderItem = ({item}:any) => (
-     <TouchableOpacity 
+     <TouchableOpacity
      onPress={() => navigation.navigate('AllBids', { post: item })}
      style={tw`bg-white mb-4 p-4 m-4 rounded-xl`}>
 
       <View style={tw`flex-row`}>
-        {item.imageUri ? (
+        {item.image ? (
           <Image
-            source={{ uri: item.imageUri }}
+            source={{ uri: `http://192.168.8.102:5000${item.image}` }}
             style={tw`w-20 h-20 rounded-lg mr-4`}
           />
         ) : (
@@ -126,22 +169,39 @@ const PostsScreen = ({ navigation }: any) => {
           <Text><Text style={tw`font-semibold`}>Breed - </Text>{item.breed}</Text>
           <Text><Text style={tw`font-semibold`}>Kg - </Text>{item.kilogram}</Text>
           <Text><Text style={tw`font-semibold`}>Expect price - </Text>{item.expectedPrice}/kg</Text>
+          {item.telephone && <View style={tw`flex-row justify-between items-center`}>
+          <Text><Text style={tw`font-semibold`}>Mobile - </Text>{item.telephone}</Text>
+            <TouchableOpacity
+            onPress={() => Linking.openURL(`tel:${item.telephone}`)}
+            style={tw`bg-green-500 px-3 py-1 rounded-lg flex-row items-center`}
+            >
+              <Ionicons name="call" size={16} color="white" style={tw`mr-1`} />
+              <Text style={tw`text-white`}>Call</Text>
+            </TouchableOpacity>
+          </View>}
+          <Text><Text style={tw`font-semibold`}>Address - </Text>{item.location}</Text>
           <Text><Text style={tw`font-semibold`}>Description - </Text>{item.description}</Text>
         </View>
       </View>
       <View style={tw`flex-row justify-between items-center mt-2`}>
-        <Text style={tw`text-gray-500`}>{item.date} {item.time}</Text>
+        <Text style={tw`text-gray-500`}>
+          {new Date(item.createdAt).toLocaleDateString()}
+        </Text>
         <View style={tw`flex-row gap-2`}>
-          <TouchableOpacity
-            onPress={() => handleEdit(item)}
-            style={tw`bg-blue-500 px-3 py-1 rounded-lg`}>
-            <Text style={tw`text-white`}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleDelete(item._id)}
-            style={tw`bg-red-500 px-3 py-1 rounded-lg`}>
+          <View style={tw`flex-row gap-2`}>
+            <TouchableOpacity
+              onPress={() => handleEdit(item)}
+              style={tw`bg-blue-500 px-3 py-2 rounded-lg flex-row items-center gap-2`}
+            >   <Ionicons name="create-outline" size={18} color="white" />
+              <Text style={tw`text-white`}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleDelete(item._id)}
+              style={tw`bg-red-500 px-3 py-2 rounded-lg flex-row items-center gap-2`}
+            ><Ionicons name="trash-outline" size={18} color="white" />
             <Text style={tw`text-white`}>Delete</Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
    </TouchableOpacity >
@@ -176,7 +236,7 @@ const PostsScreen = ({ navigation }: any) => {
           onRequestClose={() => setModalVisible(false)}>
           <View
             style={tw`flex-1 justify-center items-center bg-black opacity-80`}>
-            <View style={tw`bg-white p-6 rounded-lg shadow-md`}>
+            <View style={tw`bg-white p-6 rounded-lg shadow-md w-11/12`}>
               <Text style={tw`text-xl font-bold mb-4`}>Edit Post</Text>
               <TextInput
                 style={tw`border border-gray-300 p-2 mb-4 rounded`}
@@ -197,6 +257,24 @@ const PostsScreen = ({ navigation }: any) => {
                 value={updatedDescription}
                 onChangeText={setUpdatedDescription}
               />
+              {/* Image Selection */}
+              <TouchableOpacity
+                style={tw`bg-gray-200 p-2 rounded mb-4`}
+                onPress={selectImage}
+              >
+                <Text style={tw`text-center`}>
+                  {selectedImageUri ? 'Change Image' : 'Select Image'}
+                </Text>
+              </TouchableOpacity>
+
+              {selectedImageUri && (
+                <Image
+                  source={{uri: selectedImageUri}}
+                  style={tw`w-full h-48 rounded-md mb-4`}
+                  resizeMode="cover"
+                />
+              )}
+
               <View style={tw`flex-row justify-center gap-4`}>
                 <Button
                   title="Cancel"

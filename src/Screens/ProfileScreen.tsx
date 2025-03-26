@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  ActivityIndicator, 
-  ImageBackground, 
-  TouchableOpacity, 
-  Modal, 
-  TextInput, 
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  ImageBackground,
+  TouchableOpacity,
+  Modal,
+  TextInput,
   Image,
   Platform,
   Alert,
   PermissionsAndroid,
-  Linking
+  Linking,
 } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
@@ -53,7 +53,7 @@ const ProfileScreen = () => {
       try {
         const granted = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         ]);
 
         const isReadGranted = granted[PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED;
@@ -94,7 +94,7 @@ const ProfileScreen = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await axios.get('http://192.168.8.102:5000/api/profile/profile', {
+      const response = await axios.get('http://192.168.8.102:5000/api/profile', {
         headers: { Authorization: token },
       });
 
@@ -155,7 +155,7 @@ const ProfileScreen = () => {
       if (!token) throw new Error('No token found');
   
       const response = await axios.put(
-        'http://192.168.8.102:5000/api/profile/profile/image',
+        'http://192.168.8.102:5000/api/profile/image',
         formData,
         {
           headers: {
@@ -313,7 +313,7 @@ const ProfileScreen = () => {
               />
 
               <View style={tw`flex-row justify-between`}>
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={() => setIsEditModalVisible(false)}
                   style={tw`bg-red-500 px-4 py-2 rounded-lg mr-2`}
                 >

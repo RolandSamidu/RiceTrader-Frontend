@@ -1,15 +1,39 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert, ImageBackground, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Alert, ImageBackground, StyleSheet, ScrollView, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import { Picker } from '@react-native-picker/picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const CreatePostScreen = ({navigation}:any) => {
   const [breed, setBreed] = useState('');
   const [expectedPrice, setExpectedPrice] = useState('');
   const [kilogram, setKilogram] = useState('');
   const [location, setLocation] = useState('');
+  const [telephone, setTelephone] = useState('');
   const [description, setDescription] = useState('');
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
+  const selectImage = () => {
+    launchImageLibrary({
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.7,
+    }, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+        Alert.alert('Error', 'Failed to select image');
+      } else {
+        const uri = response.assets?.[0]?.uri;
+        if (uri) {
+          setImageUri(uri);
+        }
+      }
+    });
+  };
 
   const handleSubmit = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -18,13 +42,23 @@ const CreatePostScreen = ({navigation}:any) => {
       return;
     }
 
-    const postData = {
-      breed,
-      expectedPrice: Number(expectedPrice),
-      kilogram: Number(kilogram),
-      location,
-      description,
-    };
+    // Create FormData for multipart/form-data upload
+    const formData = new FormData();
+    formData.append('breed', breed);
+    formData.append('expectedPrice', expectedPrice);
+    formData.append('kilogram', kilogram);
+    formData.append('location', location);
+    formData.append('telephone', telephone);
+    formData.append('description', description);
+
+    // Append image if selected
+    if (imageUri) {
+      formData.append('image', {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'post_image.jpg',
+      } as any);
+    }
 
     try {
       const response = await fetch(
@@ -32,10 +66,10 @@ const CreatePostScreen = ({navigation}:any) => {
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: token,
           },
-          body: JSON.stringify(postData),
+          body: formData,
         },
       );
 
@@ -56,12 +90,12 @@ const CreatePostScreen = ({navigation}:any) => {
     <ImageBackground
       source={require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')}
       style={styles.backgroundImage}>
-       <View style={tw`p-4 mb-10 bg-black bg-opacity-60`}>
+       <View style={tw`p-4 mb-6 bg-black bg-opacity-60`}>
          <Text style={tw`text-white text-2xl font-bold`}>Create a post</Text>
        </View>
        <ScrollView style={tw`flex-1`}>
           <View style={tw`p-4`}>
-            <View style={tw`bg-slate-300 rounded mb-4`}>
+            <View style={tw`bg-slate-300 rounded mb-2`}>
                   <Picker
                     style={tw`text-slate-600`}
                     dropdownIconColor="black"
@@ -75,7 +109,7 @@ const CreatePostScreen = ({navigation}:any) => {
                     <Picker.Item label="Basmati" value="Basmati" />
                   </Picker>
               </View>
-            <View style={tw`mb-4`}>
+            <View style={tw`mb-2`}>
             <TextInput
               style={tw`bg-slate-300 rounded-md p-2.5`}
               placeholder="Enter price per kg"
@@ -84,7 +118,7 @@ const CreatePostScreen = ({navigation}:any) => {
               onChangeText={setExpectedPrice}
               keyboardType="numeric"
             /></View>
-            <View style={tw`mb-4`}>
+            <View style={tw`mb-2`}>
             <TextInput
               style={tw`bg-slate-300 rounded-md p-2.5`}
               placeholder="Enter quantity in kg"
@@ -93,15 +127,23 @@ const CreatePostScreen = ({navigation}:any) => {
               onChangeText={setKilogram}
               keyboardType="numeric"
             /></View>
-            <View style={tw`mb-4`}>
+            <View style={tw`mb-2`}>
             <TextInput
               style={tw`bg-slate-300 rounded-md p-2.5`}
-              placeholder="Enter location"
+              placeholder="Enter address"
               placeholderTextColor="#544a4a"
               value={location}
               onChangeText={setLocation}
             /></View>
-            <View style={tw`mb-4`}>
+            <View style={tw`mb-2`}>
+            <TextInput
+              style={tw`bg-slate-300 rounded-md p-2.5`}
+              placeholder="Enter mobile number"
+              placeholderTextColor="#544a4a"
+              value={telephone}
+              onChangeText={setTelephone}
+            /></View>
+            <View style={tw`mb-2`}>
             <TextInput
               style={tw`bg-slate-300 rounded-md p-2.5`}
               placeholder="Description"
@@ -111,6 +153,24 @@ const CreatePostScreen = ({navigation}:any) => {
               multiline
             />
             </View>
+            {/* Image Selection */}
+            <TouchableOpacity
+              style={tw`bg-slate-300 rounded-md p-2.5 mb-5`}
+              onPress={selectImage}
+            >
+              <Text style={tw`text-center`}>
+                {imageUri ? 'Change Image' : 'Select Image'}
+              </Text>
+            </TouchableOpacity>
+
+            {imageUri && (
+              <Image
+                source={{uri: imageUri}}
+                style={tw`w-full h-48 rounded-md mb-2`}
+                resizeMode="cover"
+              />
+            )}
+
             <TouchableOpacity
                   style={[tw`py-2 px-6 mb-5 w-80 mx-auto`, styles.button]}
                   onPress={handleSubmit}>
