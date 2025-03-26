@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Config from 'react-native-config';
 
 const PostsScreen = ({ navigation }: any) => {
   const [posts, setPosts] = useState([]);
@@ -28,7 +29,7 @@ const PostsScreen = ({ navigation }: any) => {
         return;
       }
       const response = await axios.get(
-        'http://192.168.8.102:5000/api/posts//byRole/Intermediate',
+        `${Config.API_BASE_URL}/api/posts//byRole/Intermediate`,
       );
       if (response.data && Array.isArray(response.data)) {
         //@ts-ignore

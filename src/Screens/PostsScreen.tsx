@@ -17,6 +17,7 @@ import tw from 'twrnc';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Config from 'react-native-config';
 
 const PostsScreen = ({ navigation }: any) => {
   const [posts, setPosts] = useState([]);
@@ -39,7 +40,7 @@ const PostsScreen = ({ navigation }: any) => {
         return;
       }
       const response = await axios.get(
-        `http://192.168.8.102:5000/api/posts/byUser/${id}`,
+        `${Config.API_BASE_URL}/api/posts/byUser/${id}`,
       );
       if (response.data && Array.isArray(response.data)) {
 
@@ -82,7 +83,7 @@ const PostsScreen = ({ navigation }: any) => {
     try {
       const token = await AsyncStorage.getItem('token');
       await axios.delete(
-        `http://192.168.8.102:5000/api/posts/delete/${postId}`,
+        `${Config.API_BASE_URL}/api/posts/delete/${postId}`,
         {
           headers: {Authorization: token},
         },
@@ -128,7 +129,7 @@ const PostsScreen = ({ navigation }: any) => {
 
       await axios.put(
         //@ts-ignore
-        `http://192.168.8.102:5000/api/posts/update/${selectedPost._id}`,
+        `${Config.API_BASE_URL}/api/posts/update/${selectedPost._id}`,
         formData,
         {
           headers: {
@@ -155,7 +156,7 @@ const PostsScreen = ({ navigation }: any) => {
       <View style={tw`flex-row`}>
         {item.image ? (
           <Image
-            source={{ uri: `http://192.168.8.102:5000${item.image}` }}
+            source={{ uri: `${Config.API_BASE_URL}${item.image}` }}
             style={tw`w-20 h-20 rounded-lg mr-4`}
           />
         ) : (

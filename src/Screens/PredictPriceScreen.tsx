@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import Config from 'react-native-config';
 import tw from 'twrnc';
 
 const PredictPriceScreen = () => {
@@ -21,7 +22,7 @@ const PredictPriceScreen = () => {
     }
 
     try {
-      const response = await fetch('http://192.168.8.102:5001/predict', {
+      const response = await fetch(`${Config.MODEL_URL}/predict`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

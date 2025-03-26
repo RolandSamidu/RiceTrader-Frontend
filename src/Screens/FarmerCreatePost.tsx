@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
+import Config from 'react-native-config';
 
-const CreatePostScreen = ({navigation}) => {
+const CreatePostScreen = ({navigation}:any) => {
   const [breed, setBreed] = useState('');
   const [expectedPrice, setExpectedPrice] = useState('');
   const [kilogram, setKilogram] = useState('');
@@ -27,7 +28,7 @@ const CreatePostScreen = ({navigation}) => {
 
     try {
       const response = await fetch(
-        'http://192.168.8.102:5000/api/posts/create',
+        `${Config.API_BASE_URL}/api/posts/create`,
         {
           method: 'POST',
           headers: {

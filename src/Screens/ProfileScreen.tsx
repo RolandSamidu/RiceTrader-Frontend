@@ -18,6 +18,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { launchImageLibrary } from 'react-native-image-picker';
+import Config from 'react-native-config';
 
 // Define interface for user profile
 interface UserProfile {
@@ -94,14 +95,14 @@ const ProfileScreen = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await axios.get('http://192.168.8.102:5000/api/profile', {
+      const response = await axios.get(`${Config.API_BASE_URL}/api/profile`, {
         headers: { Authorization: token },
       });
 
       setUser(response.data);
       // Set profile image if exists
       if (response.data.profilePicture) {
-        setProfileImage(`http://192.168.8.102:5000${response.data.profilePicture}`);
+        setProfileImage(`${Config.API_BASE_URL}${response.data.profilePicture}`);
       }
       setLoading(false);
     } catch (err: any) {
@@ -256,8 +257,8 @@ const ProfileScreen = () => {
           <Image
               key={profileImage || 'default'}
               source={
-                profileImage 
-                  ? { uri: `${profileImage}?${Date.now()}` } 
+                profileImage
+                  ? { uri: `${profileImage}?${Date.now()}` }
                   : require('../Images/75560505eb0c78d33055db774546a8c0.jpeg')
               }
               style={tw`w-32 h-32 rounded-full border-2 border-blue-500`}

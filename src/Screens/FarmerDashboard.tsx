@@ -8,6 +8,7 @@ import {RootStackParamList} from '../types/naviagations';
 import BottomTabNavigator from '../Components/BottomTabNavigator';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
+import Config from 'react-native-config';
 
 type DashboardNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -45,13 +46,13 @@ const FarmerDashboard = () => {
 
         setUserName(role || 'User');
         // Fetch user profile data
-        const response = await axios.get('http://192.168.8.102:5000/api/profile', {
+        const response = await axios.get(`${Config.API_BASE_URL}/api/profile`, {
           headers: { Authorization: token },
         });
 
         setUserProfile(response.data);
         if (response.data.profilePicture) {
-          setProfileImage(`http://192.168.8.102:5000${response.data.profilePicture}`);
+          setProfileImage(`${Config.API_BASE_URL}${response.data.profilePicture}`);
         }
       } catch (err: any) {
         console.error('Failed to fetch profile:', err.message);

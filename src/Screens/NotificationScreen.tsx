@@ -25,9 +25,13 @@ const NotificationScreen = ({route}: any) => {
       <Text style={styles.title}>Notification</Text>
       {notification ? (
         <View style={styles.notificationBox}>
+          {/* @ts-ignore */}
           <Text>Bidder: {notification.bidder}</Text>
+            {/* @ts-ignore */}
           <Text>Amount: LKR {notification.amount}</Text>
+            {/* @ts-ignore */}
           <Text>Message: {notification.message}</Text>
+            {/* @ts-ignore */}
           <Text>Type: {notification.type}</Text>
         </View>
       ) : (

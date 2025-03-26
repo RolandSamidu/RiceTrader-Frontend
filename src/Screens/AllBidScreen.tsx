@@ -15,6 +15,7 @@ import tw from 'twrnc';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Config from 'react-native-config';
 
 const AllBidScreen = ({ route, navigation }:any) => {
   const { post } = route.params;
@@ -36,7 +37,7 @@ const AllBidScreen = ({ route, navigation }:any) => {
       setLoading(true);
       const token = await AsyncStorage.getItem('token');
       const response = await axios.get(
-        `http://192.168.8.102:5000/api/bids/post/${post._id}`,
+        `${Config.API_BASE_URL}/api/bids/post/${post._id}`,
         {
           headers: { Authorization: token },
         }
@@ -193,8 +194,8 @@ const AllBidScreen = ({ route, navigation }:any) => {
 
       const endpoint =
         actionType === 'accept'
-          ? `http://192.168.8.178:5000/api/bids/accept/${selectedBid._id}`
-          : `http://192.168.8.178:5000/api/bids/reject/${selectedBid._id}`;
+          ? `${Config.API_BASE_URL}/api/bids/accept/${selectedBid._id}`
+          : `${Config.API_BASE_URL}/api/bids/reject/${selectedBid._id}`;
 
       const response = await axios.put(
         endpoint,
@@ -230,7 +231,7 @@ const AllBidScreen = ({ route, navigation }:any) => {
           await Promise.all(
             otherBids.map(bid =>
               axios.put(
-                `http://192.168.8.178:5000/api/bids/reject/${bid._id}`,
+                `${Config.API_BASE_URL}/api/bids/reject/${bid._id}`,
                 {},
                 {headers: {Authorization: `${token}`}},
               ),
@@ -333,7 +334,7 @@ const AllBidScreen = ({ route, navigation }:any) => {
             <View style={tw`flex-row`}>
               {post.image ? (
                 <Image
-                source={{ uri: `http://192.168.8.102:5000${post.image}` }}
+                source={{ uri: `${Config.API_BASE_URL}${post.image}` }}
                   style={tw`w-20 h-20 rounded-lg mr-4`}
                 />
               ) : (

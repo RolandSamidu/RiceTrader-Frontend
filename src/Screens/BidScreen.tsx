@@ -4,6 +4,7 @@ import tw from 'twrnc';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomTabNavigator from '../Components/BottomTabNavigator';
+import Config from 'react-native-config';
 
 const BidScreen = ({ route, navigation }:any) => {
   const { post } = route.params;
@@ -21,7 +22,7 @@ const BidScreen = ({ route, navigation }:any) => {
       const token = await AsyncStorage.getItem('token');
       const userRole = await AsyncStorage.getItem('role');
       const response = await axios.post(
-        'http://192.168.8.102:5000/api/bids/place',
+        `${Config.API_BASE_URL}/api/bids/place`,
         {
           postId: post._id,
           amount: parseFloat(bidAmount),

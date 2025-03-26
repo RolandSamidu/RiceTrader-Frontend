@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import {Card} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 
 const FarmerPostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -23,7 +24,7 @@ const FarmerPostsPage = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          'http://192.168.1.178:5000/api/posts/byrole/Farmer',
+          `${Config.API_BASE_URL}/api/posts/byrole/Farmer`,
         );
         setPosts(response.data);
       } catch (err) {
@@ -56,7 +57,7 @@ const FarmerPostsPage = () => {
       };
 
       // Place bid using the second API
-      await axios.post('http://192.168.8.102:5000/api/bids/place', bidData, {
+      await axios.post(`${Config.API_BASE_URL}/api/bids/place`, bidData, {
         headers: {
           Authorization: `${token}`,
         },

@@ -3,6 +3,7 @@ import {View, Text, TextInput, TouchableOpacity, Alert, ImageBackground, StyleSh
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import { Picker } from '@react-native-picker/picker';
+import Config from 'react-native-config';
 
 const RiceMakerCreatePost = ({navigation}:any) => {
   const [breed, setBreed] = useState('');
@@ -28,7 +29,7 @@ const RiceMakerCreatePost = ({navigation}:any) => {
 
     try {
       const response = await fetch(
-        'http://192.168.8.102:5000/api/posts/create',
+        `${Config.API_BASE_URL}/api/posts/create`,
         {
           method: 'POST',
           headers: {

@@ -15,6 +15,7 @@ import tw from 'twrnc';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../types/naviagations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 
 // Define the navigation prop type for the Login screen
 type LoginScreenNavigationProp = StackNavigationProp<
@@ -37,7 +38,7 @@ const LoginScreen = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://192.168.8.102:5000/api/auth/login', {
+      const response = await fetch(`${Config.API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

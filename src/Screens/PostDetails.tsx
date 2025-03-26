@@ -9,6 +9,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import axios from 'axios';
+import Config from 'react-native-config';
 
 const PostsScreen = ({navigation}:any) => {
   const [posts, setPosts] = useState([]);
@@ -33,7 +34,7 @@ const PostsScreen = ({navigation}:any) => {
     try {
       const token = await AsyncStorage.getItem('token');
       await axios.delete(
-        `http://192.168.8.102:5000/api/posts/delete/${postId}`,
+        `${Config.API_BASE_URL}/api/posts/delete/${postId}`,
         {
           headers: {Authorization: token},
         },

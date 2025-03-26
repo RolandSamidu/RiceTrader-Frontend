@@ -14,6 +14,7 @@ import tw from 'twrnc';
 import {Picker} from '@react-native-picker/picker';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../types/naviagations';
+import Config from 'react-native-config';
 
 const RegisterScreen = () => {
   const [firstName, setFirstName] = useState('');
@@ -45,7 +46,7 @@ const RegisterScreen = () => {
 
     try {
       const response = await fetch(
-        'http://192.168.8.102:5000/api/auth/register',
+        `${Config.API_BASE_URL}/api/auth/register`,
         {
           method: 'POST',
           headers: {
