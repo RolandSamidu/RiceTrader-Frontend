@@ -33,7 +33,7 @@ const PostsScreen = ({navigation}:any) => {
     try {
       const token = await AsyncStorage.getItem('token');
       await axios.delete(
-        `http://192.168.8.178:5000/api/posts/delete/${postId}`,
+        `http://192.168.8.102:5000/api/posts/delete/${postId}`,
         {
           headers: {Authorization: token},
         },

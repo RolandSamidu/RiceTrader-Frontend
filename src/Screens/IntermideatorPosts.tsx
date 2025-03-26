@@ -18,7 +18,7 @@ const IntermideatorPosts = ({ navigation }: any) => {
   const fetchPosts = async (role:any) => {
     try {
       const response = await axios.get(
-        `http://192.168.8.178:5000/api/posts/byRole/${role}`,
+        `http://192.168.8.102:5000/api/posts/byRole/${role}`,
       );
       if (response.data && Array.isArray(response.data)) {
         //@ts-ignore
@@ -40,7 +40,7 @@ const IntermideatorPosts = ({ navigation }: any) => {
     try {
       const token = await AsyncStorage.getItem('token');
       await axios.delete(
-        `http://192.168.8.178:5000/api/posts/delete/${postId}`,
+        `http://192.168.8.102:5000/api/posts/delete/${postId}`,
         {
           headers: {Authorization: token},
         },

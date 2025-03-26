@@ -21,7 +21,7 @@ const BidScreen = ({ route, navigation }:any) => {
       const token = await AsyncStorage.getItem('token');
       const userRole = await AsyncStorage.getItem('role');
       const response = await axios.post(
-        'http://192.168.8.178:5000/api/bids/place',
+        'http://192.168.8.102:5000/api/bids/place',
         {
           postId: post._id,
           amount: parseFloat(bidAmount),
@@ -96,7 +96,7 @@ const BidScreen = ({ route, navigation }:any) => {
               onChangeText={setBidAmount}
             />
             <Text style={tw`text-gray-500 mt-1`}>
-              Total bid: ₹{bidAmount && !isNaN(parseFloat(bidAmount))
+              Total bid: Rs.{bidAmount && !isNaN(parseFloat(bidAmount))
                 ? (parseFloat(bidAmount) * parseFloat(post.kilogram)).toFixed(2)
                 : '0.00'}
             </Text>

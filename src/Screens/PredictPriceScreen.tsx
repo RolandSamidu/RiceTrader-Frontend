@@ -21,7 +21,7 @@ const PredictPriceScreen = () => {
     }
 
     try {
-      const response = await fetch('http://192.168.8.178:5000/predict', {
+      const response = await fetch('http://192.168.8.102:5001/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,8 +36,9 @@ const PredictPriceScreen = () => {
       } else {
         Alert.alert('Error', data.error || 'Failed to get prediction');
       }
-    } catch (error) {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+    } catch (error:any) {
+      console.log('Error message', error || 'Unknown error');
+      Alert.alert('Error', error?.message);
     }
   };
 

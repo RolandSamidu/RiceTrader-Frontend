@@ -36,7 +36,7 @@ const AllBidScreen = ({ route, navigation }:any) => {
       setLoading(true);
       const token = await AsyncStorage.getItem('token');
       const response = await axios.get(
-        `http://192.168.8.178:5000/api/bids/post/${post._id}`,
+        `http://192.168.8.102:5000/api/bids/post/${post._id}`,
         {
           headers: { Authorization: token },
         }
