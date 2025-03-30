@@ -154,7 +154,6 @@ const ProfileScreen = () => {
       setLoading(true);
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('No token found');
-  
       const response = await axios.put(
         'http://192.168.8.102:5000/api/profile/image',
         formData,

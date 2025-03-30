@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Alert, ImageBackground, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, TextInput, Alert, ImageBackground, ScrollView, Image, ActivityIndicator } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +10,32 @@ const BidScreen = ({ route, navigation }:any) => {
   const { post } = route.params;
   const [bidAmount, setBidAmount] = useState('');
   const [loading, setLoading] = useState(false);
+  const [bids, setBids] = useState([]);
+  const [loadingBids, setLoadingBids] = useState(false);
+
+  // Fetch all bids for this post
+  const fetchBids = async () => {
+    setLoadingBids(true);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await axios.get(
+        `${Config.API_BASE_URL}/api/bids/post/${post._id}`,
+        {
+          headers: {Authorization: token},
+        }
+      );
+      setBids(response.data);
+    } catch (error) {
+      console.error('Error fetching bids:', error);
+    } finally {
+      setLoadingBids(false);
+    }
+  };
+
+  // Load bids when the component mounts
+  useEffect(() => {
+    fetchBids();
+  }, []);
 
   const handleBid = async () => {
     if (!bidAmount || isNaN(parseFloat(bidAmount))) {
@@ -33,13 +59,18 @@ const BidScreen = ({ route, navigation }:any) => {
       );
       console.log(response);
       Alert.alert('Success', 'Bid placed successfully!');
+      // Refresh the bids after placing a new one
+      fetchBids();
+      // Clear the bid amount
+      setBidAmount('');
       if (userRole === 'Intermediate') {
-        navigation.navigate('IntermideatorPosts');
+        // Don't navigate away, just stay on the page to see updated bids
+        // navigation.navigate('IntermideatorPosts');
       } else if (userRole === 'Rice Producer') {
-        navigation.navigate('RiceMakerPosts');
+        // navigation.navigate('RiceMakerPosts');
       } else {
         // Default fallback
-        navigation.goBack();
+        // navigation.goBack();
       }
     } catch (error) {
       console.error('Error placing bid:', error);
@@ -56,20 +87,14 @@ const BidScreen = ({ route, navigation }:any) => {
     >
       <View style={tw`p-4 bg-gray-800 mb-6`}>
           <Text style={tw`mx-auto text-white text-2xl font-bold`}>Place a Bid</Text>
-        </View >
+      </View>
       <ScrollView>
         <View style={tw`p-4 m-4 bg-white rounded-xl`}>
-          {/* <TouchableOpacity
-            style={tw`absolute top-2 left-2 z-10`}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="arrow-back" size={24} color="#333" />
-          </TouchableOpacity> */}
           <View style={tw`bg-gray-100 p-4 rounded-lg mb-4`}>
             <View style={tw`flex-row`}>
-              {post.imageUri ? (
-                <Image
-                  source={{ uri: post.imageUri }}
+              {post.image ? (
+                       <Image
+                         source={{ uri: `${Config.API_BASE_URL}${post.image}` }}
                   style={tw`w-24 h-24 rounded-lg mr-4`}
                 />
               ) : (
@@ -116,6 +141,40 @@ const BidScreen = ({ route, navigation }:any) => {
               <Text style={tw`font-semibold`}>Note: </Text>
               Once you place a bid, the farmer will be notified and can choose to accept or reject your offer.
             </Text>
+          </View>
+
+          {/* Bids Section */}
+          <View style={tw`mt-6`}>
+            <Text style={tw`text-xl font-bold mb-3`}>All Bids</Text>
+            {loadingBids ? (
+              <ActivityIndicator size="large" color="#4287f5" />
+            ) : bids.length > 0 ? (
+              bids.map((bid, index) => (
+                //@ts-ignore
+                <View key={bid._id || index} style={tw`bg-gray-50 p-3 rounded-lg mb-2 border border-gray-200`}>
+                  <View style={tw`flex-row justify-between`}>
+                    <Text style={tw`font-medium`}>
+                      {/* @ts-ignore */}
+                      {bid.bidder.firstName} {bid.bidder.lastName}
+                    </Text>
+                    {/* @ts-ignore */}
+                    <Text style={tw`text-blue-600 font-bold`}>Rs. {bid.amount}/kg</Text>
+                  </View>
+                  <View style={tw`flex-row justify-between mt-1`}>
+                    {/* @ts-ignore */}
+                    <Text style={tw`text-gray-500`}>{bid.bidder.role}</Text>
+                    {/* @ts-ignore */}
+                    <Text style={tw`text-gray-500`}>Total: Rs. {(bid.amount * parseFloat(post.kilogram)).toFixed(2)}</Text>
+                  </View>
+                  <Text style={tw`text-gray-400 text-xs mt-1`}>
+                    {/* @ts-ignore */}
+                    {new Date(bid.createdAt).toLocaleDateString()} {new Date(bid.createdAt).toLocaleTimeString()}
+                  </Text>
+                </View>
+              ))
+            ) : (
+              <Text style={tw`text-gray-500 italic`}>No bids have been placed on this post yet.</Text>
+            )}
           </View>
         </View>
       </ScrollView>

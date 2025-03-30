@@ -52,9 +52,9 @@ const PostsScreen = ({ navigation }: any) => {
       }
       >
       <View style={tw`flex-row`}>
-        {item.imageUri ? (
+        {item.image ? (
           <Image
-            source={{ uri: item.imageUri }}
+            source={{ uri: `${Config.API_BASE_URL}${item.image}` }}
             style={tw`w-20 h-20 rounded-lg mr-4`}
           />
         ) : (
